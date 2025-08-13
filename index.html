@@ -38,14 +38,21 @@
                 <div>
                     <h2 class="text-2xl font-semibold mb-3 text-gray-700">1. Capture Your Fish</h2>
                     <p class="text-sm text-gray-500 mb-4">Use your phone's camera or upload a file. For best results, use a clear, side-view image of the fish.</p>
-                    <input type="file" id="imageUpload" accept="image/*" capture="environment" class="block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100">
+                    
+                    <!-- The actual file input is hidden from view -->
+                    <input type="file" id="imageUpload" accept="image/*" capture="environment" class="hidden">
+                    
+                    <!-- This label acts as the custom, styled button for the file input -->
+                    <label for="imageUpload" class="w-full bg-blue-500 text-white font-bold py-3 px-4 rounded-lg hover:bg-blue-600 transition duration-300 cursor-pointer text-center block">
+                        Get Pic
+                    </label>
                 </div>
                 
                 <div id="imagePreviewContainer" class="hidden text-center">
                     <img id="imagePreview" src="#" alt="Image preview" class="max-w-full max-h-64 mx-auto rounded-lg shadow-inner"/>
                 </div>
 
-                <button id="identifyBtn" class="w-full bg-blue-500 text-white font-bold py-3 px-4 rounded-lg hover:bg-blue-600 transition duration-300 disabled:bg-gray-400" disabled>
+                <button id="identifyBtn" class="w-full bg-green-500 text-white font-bold py-3 px-4 rounded-lg hover:bg-green-600 transition duration-300 disabled:bg-gray-400" disabled>
                     Identify Fish
                 </button>
 
