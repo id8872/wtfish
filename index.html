@@ -66,9 +66,21 @@
             <div class="bg-white p-6 rounded-lg shadow-md flex flex-col justify-between">
                 <div>
                     <h2 class="text-2xl font-semibold mb-3 text-gray-700">2. Log Your Catch</h2>
-                    <p class="text-gray-600">Once your fish has been identified, click the button below to open the official Fish ON-Line website.</p>
-                    <br>
-                    <p class="text-sm text-gray-500 bg-blue-50 p-3 rounded-lg border border-blue-200">Please note: You will be asked to enter details like **time spent fishing** and **fishing method** directly on their site.</p>
+                    <p class="text-gray-600 mb-4">On the Fish ON-Line site, follow these steps:</p>
+                    
+                    <div class="bg-blue-50 p-4 rounded-lg border border-blue-200">
+                        <ol class="list-decimal list-inside space-y-3 text-gray-700">
+                            <li>
+                                Click the <strong>Waterbody</strong> icon to open the details panel.
+                                <div class="text-center my-2">
+                                    <img src="assets/Waterbody.png" alt="Waterbody Icon" class="mx-auto h-12 w-12" onerror="this.style.display='none'; this.nextElementSibling.style.display='block';">
+                                    <span class="text-xs text-gray-500 hidden">Waterbody.png not found</span>
+                                </div>
+                            </li>
+                            <li>Select the <strong>Survey</strong> tab.</li>
+                            <li>Enter your catch details (the species identified here, time spent, etc.).</li>
+                        </ol>
+                    </div>
                 </div>
 
                 <button id="logCatchBtn" class="w-full bg-green-600 text-white font-bold py-3 px-4 rounded-lg hover:bg-green-700 transition duration-300 disabled:bg-gray-400 mt-6" disabled>
