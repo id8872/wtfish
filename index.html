@@ -29,14 +29,14 @@
     <div class="container mx-auto p-4 md:p-8 max-w-4xl">
         <header class="text-center mb-8">
             <h1 class="text-4xl font-bold text-blue-600">AI Fish Logger</h1>
-            <p class="text-gray-600 mt-2">Identify your catch and log it in seconds. Perfect for fishing in Ontario!</p>
+            <p class="text-gray-600 mt-2">A helper to identify your fish before logging it on Fish ON-Line.</p>
         </header>
 
         <main class="grid grid-cols-1 md:grid-cols-2 gap-8">
             <!-- Left Column: Image & Identification -->
             <div class="bg-white p-6 rounded-lg shadow-md flex flex-col gap-6">
                 <div>
-                    <h2 class="text-2xl font-semibold mb-3 text-gray-700">1. Capture or Upload Photo</h2>
+                    <h2 class="text-2xl font-semibold mb-3 text-gray-700">1. Capture Your Fish</h2>
                     <p class="text-sm text-gray-500 mb-4">Use your phone's camera or upload a file. For best results, use a clear, side-view image of the fish.</p>
                     <input type="file" id="imageUpload" accept="image/*" capture="environment" class="block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100">
                 </div>
@@ -63,45 +63,15 @@
             </div>
 
             <!-- Right Column: Details & Logging -->
-            <div class="bg-white p-6 rounded-lg shadow-md flex flex-col gap-6">
+            <div class="bg-white p-6 rounded-lg shadow-md flex flex-col justify-between">
                 <div>
-                    <h2 class="text-2xl font-semibold mb-3 text-gray-700">2. Prepare to Log Your Catch</h2>
-                    <p class="text-sm text-gray-500 mb-4">Confirm the details of your fishing trip below. You will enter these on the Fish ON-Line website.</p>
-                    
-                    <div class="space-y-4">
-                         <div>
-                            <label for="timeSpent" class="block text-sm font-medium text-gray-700">Time Spent Fishing (hours)</label>
-                            <input type="number" id="timeSpent" min="0.5" step="0.5" value="1" class="mt-1 block w-full px-3 py-2 bg-white border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500">
-                        </div>
-
-                        <div>
-                            <label class="block text-sm font-medium text-gray-700">Fishing Method</label>
-                            <fieldset class="mt-2">
-                                <div class="flex items-center space-x-4">
-                                    <div class="flex items-center">
-                                        <input id="methodBoat" name="fishingMethod" type="radio" value="Boat" class="focus:ring-blue-500 h-4 w-4 text-blue-600 border-gray-300" checked>
-                                        <label for="methodBoat" class="ml-2 block text-sm text-gray-900">Boat</label>
-                                    </div>
-                                    <div class="flex items-center">
-                                        <input id="methodShore" name="fishingMethod" type="radio" value="Shore" class="focus:ring-blue-500 h-4 w-4 text-blue-600 border-gray-300">
-                                        <label for="methodShore" class="ml-2 block text-sm text-gray-900">Shore</label>
-                                    </div>
-                                    <div class="flex items-center">
-                                        <input id="methodIce" name="fishingMethod" type="radio" value="Ice" class="focus:ring-blue-500 h-4 w-4 text-blue-600 border-gray-300">
-                                        <label for="methodIce" class="ml-2 block text-sm text-gray-900">Ice</label>
-                                    </div>
-                                </div>
-                            </fieldset>
-                        </div>
-                    </div>
-                </div>
-                
-                <div class="border-t border-gray-200 pt-4">
-                    <h2 class="text-xl font-semibold mb-3 text-gray-700">3. Log on Fish ON-Line</h2>
-                     <p class="text-sm text-gray-500 mb-4">The button below will open the official Fish ON-Line website. Due to the site's complexity, you'll need to enter the details manually.</p>
+                    <h2 class="text-2xl font-semibold mb-3 text-gray-700">2. Log Your Catch</h2>
+                    <p class="text-gray-600">Once your fish has been identified, click the button below to open the official Fish ON-Line website.</p>
+                    <br>
+                    <p class="text-sm text-gray-500 bg-blue-50 p-3 rounded-lg border border-blue-200">Please note: You will be asked to enter details like **time spent fishing** and **fishing method** directly on their site.</p>
                 </div>
 
-                <button id="logCatchBtn" class="w-full bg-green-600 text-white font-bold py-3 px-4 rounded-lg hover:bg-green-700 transition duration-300 disabled:bg-gray-400">
+                <button id="logCatchBtn" class="w-full bg-green-600 text-white font-bold py-3 px-4 rounded-lg hover:bg-green-700 transition duration-300 disabled:bg-gray-400 mt-6" disabled>
                     Open Fish ON-Line to Log Catch
                 </button>
             </div>
@@ -124,7 +94,6 @@
             const targetUrl = "https://www.lioapplications.lrc.gov.on.ca/fishonline/Index.html?viewer=FishONLine.FishONLine&locale=en-CA";
             let base64ImageData = null;
 
-            // --- NEW FUNCTION TO RESIZE IMAGE ---
             const resizeImage = (file, maxWidth, maxHeight, quality) => {
                 return new Promise((resolve, reject) => {
                     const reader = new FileReader();
@@ -161,17 +130,14 @@
                 });
             };
 
-            // --- UPDATED EVENT LISTENER ---
             imageUpload.addEventListener('change', async (event) => {
                 const file = event.target.files[0];
                 if (file) {
                     try {
-                        // Resize the image to a max of 1024x1024 and 80% quality
                         const resizedDataUrl = await resizeImage(file, 1024, 1024, 0.8);
                         imagePreview.src = resizedDataUrl;
                         imagePreviewContainer.classList.remove('hidden');
                         
-                        // Get the base64 part of the data URL
                         base64ImageData = resizedDataUrl.split(',')[1];
                         
                         identifyBtn.disabled = false;
