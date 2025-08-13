@@ -29,7 +29,7 @@
     <div class="container mx-auto p-4 md:p-8 max-w-4xl">
         <header class="text-center mb-8">
             <h1 class="text-4xl font-bold text-blue-600">AI Fish Logger</h1>
-            <p class="text-gray-600 mt-2">Identify your catch and log it in seconds. Perfect for fishing in Ontario and beyond!</p>
+            <p class="text-gray-600 mt-2">Identify your catch and log it in seconds. Perfect for fishing in Ontario!</p>
         </header>
 
         <main class="grid grid-cols-1 md:grid-cols-2 gap-8">
@@ -38,7 +38,6 @@
                 <div>
                     <h2 class="text-2xl font-semibold mb-3 text-gray-700">1. Capture or Upload Photo</h2>
                     <p class="text-sm text-gray-500 mb-4">Use your phone's camera or upload a file. For best results, use a clear, side-view image of the fish.</p>
-                    <!-- The 'capture' attribute prompts mobile devices to use the camera -->
                     <input type="file" id="imageUpload" accept="image/*" capture="environment" class="block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100">
                 </div>
                 
@@ -122,12 +121,9 @@
             const errorContainer = document.getElementById('error');
             const logCatchBtn = document.getElementById('logCatchBtn');
             
-            // The target URL for logging the catch
             const targetUrl = "https://www.lioapplications.lrc.gov.on.ca/fishonline/Index.html?viewer=FishONLine.FishONLine&locale=en-CA";
-
             let base64ImageData = null;
 
-            // Event listener for image upload
             imageUpload.addEventListener('change', (event) => {
                 const file = event.target.files[0];
                 if (file) {
@@ -135,52 +131,37 @@
                     reader.onload = (e) => {
                         imagePreview.src = e.target.result;
                         imagePreviewContainer.classList.remove('hidden');
-                        // Extract base64 data for API call
                         base64ImageData = e.target.result.split(',')[1];
                         identifyBtn.disabled = false;
                         resultContainer.classList.add('hidden');
-                        logCatchBtn.disabled = true; // Disable until fish is identified
+                        logCatchBtn.disabled = true;
                     };
                     reader.readAsDataURL(file);
                 }
             });
 
-            // Event listener for the identify button
             identifyBtn.addEventListener('click', async () => {
                 if (!base64ImageData) {
                     showError("Please capture or upload an image first.");
                     return;
                 }
                 
-                // Reset UI
                 loader.classList.remove('hidden');
                 identifyBtn.disabled = true;
                 resultContainer.classList.add('hidden');
                 errorContainer.classList.add('hidden');
 
                 try {
-                    const prompt = "Identify the species of fish in this image. This fish was likely caught in Ontario, Canada. Respond with only the common name of the fish.";
-                    
-                    const payload = {
-                        contents: [{
-                            parts: [
-                                { text: prompt },
-                                { inlineData: { mimeType: "image/jpeg", data: base64ImageData } }
-                            ]
-                        }]
-                    };
-                    
-                    const apiKey = ""; // API key will be injected by the environment
-                    const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-05-20:generateContent?key=${apiKey}`;
-
-                    const response = await fetch(apiUrl, {
+                    // Call our OWN serverless function, not Google's API directly
+                    const response = await fetch('/api/identify', {
                         method: 'POST',
                         headers: { 'Content-Type': 'application/json' },
-                        body: JSON.stringify(payload)
+                        body: JSON.stringify({ imageData: base64ImageData })
                     });
 
                     if (!response.ok) {
-                        throw new Error(`API request failed with status ${response.status}`);
+                        const errorResult = await response.json();
+                        throw new Error(errorResult.error || `Request failed with status ${response.status}`);
                     }
 
                     const result = await response.json();
@@ -189,9 +170,15 @@
                         const identifiedText = result.candidates[0].content.parts[0].text;
                         fishResult.textContent = identifiedText.trim();
                         resultContainer.classList.remove('hidden');
-                        logCatchBtn.disabled = false; // Enable logging after identification
+                        logCatchBtn.disabled = false;
                     } else {
-                        throw new Error("Could not identify the fish from the image.");
+                        // This handles cases where the API returns a 200 OK but no identification (e.g., safety block)
+                        const blockReason = result.promptFeedback?.blockReason;
+                        if (blockReason) {
+                             throw new Error(`Image was blocked for safety reasons: ${blockReason}. Try a different image.`);
+                        } else {
+                             throw new Error("Could not identify the fish from the image.");
+                        }
                     }
 
                 } catch (err) {
@@ -203,10 +190,7 @@
                 }
             });
 
-            // Event listener for the log catch button
             logCatchBtn.addEventListener('click', () => {
-                // Since the target site is a complex app, we can't pre-fill the form.
-                // We will just open the URL in a new tab for the user.
                 window.open(targetUrl, '_blank');
             });
 
