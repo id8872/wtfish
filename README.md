@@ -1,4 +1,4 @@
-# AI Fish Logger
+# WTFish Identifier
 
 A simple web app to help anglers in Ontario identify a fish from a photo and provides a quick link to log the catch on the official Fish ON-Line website.
 
