@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Fish Logger</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+        .loader {
+            border: 4px solid #f3f3f3;
+            border-top: 4px solid #3498db;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            animation: spin 1s linear infinite;
+        }
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+    </style>
+</head>
+<body class="bg-gray-100 text-gray-800">
+
+    <div class="container mx-auto p-4 md:p-8 max-w-4xl">
+        <header class="text-center mb-8">
+            <h1 class="text-4xl font-bold text-blue-600">AI Fish Logger</h1>
+            <p class="text-gray-600 mt-2">Identify your catch and log it in seconds. Perfect for fishing in Ontario and beyond!</p>
+        </header>
+
+        <main class="grid grid-cols-1 md:grid-cols-2 gap-8">
+            <!-- Left Column: Image & Identification -->
+            <div class="bg-white p-6 rounded-lg shadow-md flex flex-col gap-6">
+                <div>
+                    <h2 class="text-2xl font-semibold mb-3 text-gray-700">1. Capture or Upload Photo</h2>
+                    <p class="text-sm text-gray-500 mb-4">Use your phone's camera or upload a file. For best results, use a clear, side-view image of the fish.</p>
+                    <!-- The 'capture' attribute prompts mobile devices to use the camera -->
+                    <input type="file" id="imageUpload" accept="image/*" capture="environment" class="block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100">
+                </div>
+                
+                <div id="imagePreviewContainer" class="hidden text-center">
+                    <img id="imagePreview" src="#" alt="Image preview" class="max-w-full max-h-64 mx-auto rounded-lg shadow-inner"/>
+                </div>
+
+                <button id="identifyBtn" class="w-full bg-blue-500 text-white font-bold py-3 px-4 rounded-lg hover:bg-blue-600 transition duration-300 disabled:bg-gray-400" disabled>
+                    Identify Fish
+                </button>
+
+                <div id="resultContainer" class="hidden text-center p-4 bg-green-50 rounded-lg border border-green-200">
+                     <h3 class="text-lg font-semibold text-gray-700">Identified Species:</h3>
+                     <p id="fishResult" class="text-2xl font-bold text-green-700"></p>
+                </div>
+                 <div id="loader" class="hidden self-center">
+                    <div class="loader"></div>
+                    <p class="mt-2 text-gray-500">AI is analyzing...</p>
+                </div>
+                 <div id="error" class="hidden text-center p-4 bg-red-50 rounded-lg border border-red-200">
+                    <p class="text-red-600 font-semibold"></p>
+                </div>
+            </div>
+
+            <!-- Right Column: Details & Logging -->
+            <div class="bg-white p-6 rounded-lg shadow-md flex flex-col gap-6">
+                <div>
+                    <h2 class="text-2xl font-semibold mb-3 text-gray-700">2. Prepare to Log Your Catch</h2>
+                    <p class="text-sm text-gray-500 mb-4">Confirm the details of your fishing trip below. You will enter these on the Fish ON-Line website.</p>
+                    
+                    <div class="space-y-4">
+                         <div>
+                            <label for="timeSpent" class="block text-sm font-medium text-gray-700">Time Spent Fishing (hours)</label>
+                            <input type="number" id="timeSpent" min="0.5" step="0.5" value="1" class="mt-1 block w-full px-3 py-2 bg-white border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500">
+                        </div>
+
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700">Fishing Method</label>
+                            <fieldset class="mt-2">
+                                <div class="flex items-center space-x-4">
+                                    <div class="flex items-center">
+                                        <input id="methodBoat" name="fishingMethod" type="radio" value="Boat" class="focus:ring-blue-500 h-4 w-4 text-blue-600 border-gray-300" checked>
+                                        <label for="methodBoat" class="ml-2 block text-sm text-gray-900">Boat</label>
+                                    </div>
+                                    <div class="flex items-center">
+                                        <input id="methodShore" name="fishingMethod" type="radio" value="Shore" class="focus:ring-blue-500 h-4 w-4 text-blue-600 border-gray-300">
+                                        <label for="methodShore" class="ml-2 block text-sm text-gray-900">Shore</label>
+                                    </div>
+                                    <div class="flex items-center">
+                                        <input id="methodIce" name="fishingMethod" type="radio" value="Ice" class="focus:ring-blue-500 h-4 w-4 text-blue-600 border-gray-300">
+                                        <label for="methodIce" class="ml-2 block text-sm text-gray-900">Ice</label>
+                                    </div>
+                                </div>
+                            </fieldset>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="border-t border-gray-200 pt-4">
+                    <h2 class="text-xl font-semibold mb-3 text-gray-700">3. Log on Fish ON-Line</h2>
+                     <p class="text-sm text-gray-500 mb-4">The button below will open the official Fish ON-Line website. Due to the site's complexity, you'll need to enter the details manually.</p>
+                </div>
+
+                <button id="logCatchBtn" class="w-full bg-green-600 text-white font-bold py-3 px-4 rounded-lg hover:bg-green-700 transition duration-300 disabled:bg-gray-400">
+                    Open Fish ON-Line to Log Catch
+                </button>
+            </div>
+        </main>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            // DOM Elements
+            const imageUpload = document.getElementById('imageUpload');
+            const imagePreviewContainer = document.getElementById('imagePreviewContainer');
+            const imagePreview = document.getElementById('imagePreview');
+            const identifyBtn = document.getElementById('identifyBtn');
+            const loader = document.getElementById('loader');
+            const resultContainer = document.getElementById('resultContainer');
+            const fishResult = document.getElementById('fishResult');
+            const errorContainer = document.getElementById('error');
+            const logCatchBtn = document.getElementById('logCatchBtn');
+            
+            // The target URL for logging the catch
+            const targetUrl = "https://www.lioapplications.lrc.gov.on.ca/fishonline/Index.html?viewer=FishONLine.FishONLine&locale=en-CA";
+
+            let base64ImageData = null;
+
+            // Event listener for image upload
+            imageUpload.addEventListener('change', (event) => {
+                const file = event.target.files[0];
+                if (file) {
+                    const reader = new FileReader();
+                    reader.onload = (e) => {
+                        imagePreview.src = e.target.result;
+                        imagePreviewContainer.classList.remove('hidden');
+                        // Extract base64 data for API call
+                        base64ImageData = e.target.result.split(',')[1];
+                        identifyBtn.disabled = false;
+                        resultContainer.classList.add('hidden');
+                        logCatchBtn.disabled = true; // Disable until fish is identified
+                    };
+                    reader.readAsDataURL(file);
+                }
+            });
+
+            // Event listener for the identify button
+            identifyBtn.addEventListener('click', async () => {
+                if (!base64ImageData) {
+                    showError("Please capture or upload an image first.");
+                    return;
+                }
+                
+                // Reset UI
+                loader.classList.remove('hidden');
+                identifyBtn.disabled = true;
+                resultContainer.classList.add('hidden');
+                errorContainer.classList.add('hidden');
+
+                try {
+                    const prompt = "Identify the species of fish in this image. This fish was likely caught in Ontario, Canada. Respond with only the common name of the fish.";
+                    
+                    const payload = {
+                        contents: [{
+                            parts: [
+                                { text: prompt },
+                                { inlineData: { mimeType: "image/jpeg", data: base64ImageData } }
+                            ]
+                        }]
+                    };
+                    
+                    const apiKey = ""; // API key will be injected by the environment
+                    const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-05-20:generateContent?key=${apiKey}`;
+
+                    const response = await fetch(apiUrl, {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify(payload)
+                    });
+
+                    if (!response.ok) {
+                        throw new Error(`API request failed with status ${response.status}`);
+                    }
+
+                    const result = await response.json();
+                    
+                    if (result.candidates && result.candidates[0].content && result.candidates[0].content.parts[0].text) {
+                        const identifiedText = result.candidates[0].content.parts[0].text;
+                        fishResult.textContent = identifiedText.trim();
+                        resultContainer.classList.remove('hidden');
+                        logCatchBtn.disabled = false; // Enable logging after identification
+                    } else {
+                        throw new Error("Could not identify the fish from the image.");
+                    }
+
+                } catch (err) {
+                    showError(err.message || "An unknown error occurred.");
+                    logCatchBtn.disabled = true;
+                } finally {
+                    loader.classList.add('hidden');
+                    identifyBtn.disabled = false;
+                }
+            });
+
+            // Event listener for the log catch button
+            logCatchBtn.addEventListener('click', () => {
+                // Since the target site is a complex app, we can't pre-fill the form.
+                // We will just open the URL in a new tab for the user.
+                window.open(targetUrl, '_blank');
+            });
+
+            function showError(message) {
+                errorContainer.querySelector('p').textContent = message;
+                errorContainer.classList.remove('hidden');
+            }
+        });
+    </script>
+</body>
+</html>
