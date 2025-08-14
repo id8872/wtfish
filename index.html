@@ -23,6 +23,14 @@
             0% { transform: rotate(0deg); }
             100% { transform: rotate(360deg); }
         }
+        /* New style for out-of-season warnings */
+        .out-of-season {
+            background-color: #fff5f5; /* Light red background */
+            border-color: #fecaca; /* Red border */
+        }
+        .out-of-season h3, .out-of-season p, .out-of-season h4, .out-of-season li {
+            color: #b91c1c; /* Dark red text */
+        }
     </style>
 </head>
 <body class="bg-gray-100 text-gray-800">
@@ -126,14 +134,12 @@
             let base64ImageData = null;
             let resizedDataUrlForDownload = null;
 
-            // Populate FMZ dropdown
             for (let i = 1; i <= 20; i++) {
                 const option = document.createElement('option');
                 option.value = `FMZ ${i}`;
                 option.textContent = `Zone ${i}`;
                 fmzSelect.appendChild(option);
             }
-            // Since you're in Orillia, let's default to FMZ 16
             fmzSelect.value = 'FMZ 16';
 
             const resizeImage = (file, maxWidth, maxHeight, quality) => {
@@ -222,7 +228,7 @@
                         headers: { 'Content-Type': 'application/json' },
                         body: JSON.stringify({ 
                             imageData: base64ImageData,
-                            fmz: selectedFmz // This line was missing the fmz value
+                            fmz: selectedFmz
                         })
                     });
 
@@ -236,15 +242,27 @@
                     if (result.species) {
                         fishResult.textContent = result.species;
                         
-                        let regsHtml = '<h4 class="font-semibold text-gray-600">Regulations:</h4>';
+                        // --- UPDATED SECTION TO HANDLE WARNINGS ---
+                        if (result.isOutOfSeason) {
+                            resultContainer.classList.add('out-of-season');
+                            resultContainer.classList.remove('bg-green-50', 'border-green-200');
+                        } else {
+                            resultContainer.classList.remove('out-of-season');
+                            resultContainer.classList.add('bg-green-50', 'border-green-200');
+                        }
+                        
+                        let regsHtml = '<h4 class="font-semibold">Regulations:</h4>';
                         if (result.regulations) {
-                            regsHtml += `<ul class="list-disc list-inside text-sm text-gray-600 mt-1">`;
+                            regsHtml += `<ul class="list-disc list-inside text-sm mt-1">`;
                             regsHtml += `<li><strong>Season:</strong> ${result.regulations.season}</li>`;
                             regsHtml += `<li><strong>Sport Limit:</strong> ${result.regulations.limits.Sport}</li>`;
                             regsHtml += `<li><strong>Conservation Limit:</strong> ${result.regulations.limits.Conservation}</li>`;
                             regsHtml += `</ul>`;
+                            if (result.isOutOfSeason) {
+                                regsHtml += `<p class="font-bold text-sm mt-2">Warning: The current date appears to be outside the open season for this species.</p>`;
+                            }
                         } else {
-                            regsHtml += `<p class="text-sm text-gray-600 mt-1">No specific regulations found for this species in ${selectedFmz}. Please consult the official summary.</p>`;
+                            regsHtml += `<p class="text-sm mt-1">No specific regulations found for this species in ${selectedFmz}. Please consult the official summary.</p>`;
                         }
                         regsContainer.innerHTML = regsHtml;
 
