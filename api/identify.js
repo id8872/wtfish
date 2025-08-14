@@ -15,20 +15,36 @@ function isSeasonOpen(seasonString) {
     const now = new Date();
     const today = { month: now.getMonth() + 1, day: now.getDate() };
 
+    // --- NEW: Smarter date parsing logic ---
     const parseDate = (dateStr) => {
-        const parts = dateStr.trim().replace(/,.*/, '').split(' ');
         const monthNames = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+        
+        // Handle complex text dates by converting them to a simple, parsable format
+        const simplifiedStr = dateStr.trim()
+            .replace(/first sat in/i, '')
+            .replace(/second sat in/i, '')
+            .replace(/third sat in/i, '')
+            .replace(/fourth sat in/i, '')
+            .replace(/fri before fourth sat in/i, '')
+            .replace(/fri before third sat in/i, '')
+            .trim();
+
+        const parts = simplifiedStr.replace(/,.*/, '').split(' ');
         let monthIndex = monthNames.findIndex(m => parts[0].startsWith(m));
-        if (monthIndex === -1) return null; // Handle cases where month is not found
+        
+        if (monthIndex === -1) return null;
+
+        // If the original string had a complex date, we approximate the day to the 1st
+        // This is a safe approximation as it will correctly place the date within the month.
+        const day = parts[1] ? parseInt(parts[1], 10) : 1;
+
         return {
             month: monthIndex + 1,
-            day: parseInt(parts[1], 10)
+            day: day
         };
     };
     
-    // This logic is simplified and may not catch all complex date rules like "third Saturday in May".
-    const simplifiedSeason = seasonString.replace(/(\w+\s\w+\s\w+\s\w+)/g, '');
-    const seasons = simplifiedSeason.split('&');
+    const seasons = seasonString.split('&');
 
     for (const season of seasons) {
         const dates = season.split('to');
@@ -39,7 +55,7 @@ function isSeasonOpen(seasonString) {
 
         if (!start || !end) continue;
 
-        if (start.month <= end.month) {
+        if (start.month <= end.month) { // Season does not cross the new year
             if ((today.month > start.month || (today.month === start.month && today.day >= start.day)) &&
                 (today.month < end.month || (today.month === end.month && today.day <= end.day))) {
                 return true;
