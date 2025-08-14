@@ -84,11 +84,9 @@ export default async function handler(request, response) {
         return response.status(400).json({ error: 'Missing image data or FMZ.' });
     }
 
-    // --- NEW: Dynamically build the prompt with a list of possible fish ---
     const zoneRegs = regulations[fmz];
     const possibleSpecies = zoneRegs ? Object.keys(zoneRegs).join(', ') : 'common Ontario sport fish';
     const prompt = `From the following list of fish found in Ontario (${possibleSpecies}), identify the species of fish in this image. Respond with only the common name of the fish.`;
-    // --- END NEW PROMPT LOGIC ---
 
     const payload = {
       contents: [{
@@ -122,6 +120,7 @@ export default async function handler(request, response) {
     let isOutOfSeason = false;
     let isCatchAndRelease = false;
     let hasSizeLimit = false;
+    let isNotListedInZone = false;
 
     if (zoneRegs) {
         const regKey = Object.keys(zoneRegs).find(key => identifiedSpecies.toLowerCase().includes(key.toLowerCase()));
@@ -140,6 +139,9 @@ export default async function handler(request, response) {
             if (sizeKeywords.some(key => sportLimitText.includes(key) || conservationLimitText.includes(key))) {
                 hasSizeLimit = true;
             }
+        } else {
+            // --- NEW: Handle the case where the fish is not in our regulations list for this zone ---
+            isNotListedInZone = true;
         }
     }
     
@@ -148,7 +150,8 @@ export default async function handler(request, response) {
         regulations: speciesRegs,
         isOutOfSeason: isOutOfSeason,
         isCatchAndRelease: isCatchAndRelease,
-        hasSizeLimit: hasSizeLimit
+        hasSizeLimit: hasSizeLimit,
+        isNotListedInZone: isNotListedInZone // Send the new flag
     });
 
   } catch (error) {
