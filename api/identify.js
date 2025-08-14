@@ -86,12 +86,12 @@ export default async function handler(request, response) {
 
     const zoneRegs = regulations[fmz];
     const possibleSpecies = zoneRegs ? Object.keys(zoneRegs).join(', ') : 'common Ontario sport fish';
-    const prompt = `From the following list of fish found in Ontario (${possibleSpecies}), identify the species of fish in this image. Respond with only the common name of the fish.`;
+    const identifyPrompt = `From the following list of fish found in Ontario (${possibleSpecies}), identify the species of fish in this image. Respond with only the common name of the fish.`;
 
     const payload = {
       contents: [{
         parts: [
-          { text: prompt },
+          { text: identifyPrompt },
           { inlineData: { mimeType: "image/jpeg", data: imageData } }
         ]
       }]
@@ -110,17 +110,22 @@ export default async function handler(request, response) {
     }
 
     const result = await apiResponse.json();
-    const identifiedSpecies = result?.candidates?.[0]?.content?.parts?.[0]?.text?.trim();
+    let identifiedSpecies = result?.candidates?.[0]?.content?.parts?.[0]?.text?.trim();
 
     if (!identifiedSpecies) {
         return response.status(500).json({ error: 'Could not identify the fish from the image.' });
     }
+    
+    // --- NEW: Clean up the AI response to get just the name ---
+    identifiedSpecies = identifiedSpecies.replace(/^the fish in the image is a /i, '').replace(/\.$/, '');
+
 
     let speciesRegs = null;
     let isOutOfSeason = false;
     let isCatchAndRelease = false;
     let hasSizeLimit = false;
     let isNotListedInZone = false;
+    let additionalDetails = null;
 
     if (zoneRegs) {
         const regKey = Object.keys(zoneRegs).find(key => identifiedSpecies.toLowerCase().includes(key.toLowerCase()));
@@ -140,18 +145,30 @@ export default async function handler(request, response) {
                 hasSizeLimit = true;
             }
         } else {
-            // --- NEW: Handle the case where the fish is not in our regulations list for this zone ---
             isNotListedInZone = true;
+            // --- NEW: If fish is not in the zone, get more details about it ---
+            const detailsPrompt = `Provide a brief, one-sentence description of where a ${identifiedSpecies} is typically found.`;
+            const detailsPayload = { contents: [{ parts: [{ text: detailsPrompt }] }] };
+            const detailsResponse = await fetch(apiUrl, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(detailsPayload)
+            });
+            if (detailsResponse.ok) {
+                const detailsResult = await detailsResponse.json();
+                additionalDetails = detailsResult?.candidates?.[0]?.content?.parts?.[0]?.text?.trim();
+            }
         }
     }
     
     response.status(200).json({
         species: identifiedSpecies,
         regulations: speciesRegs,
-        isOutOfSeason: isOutOfSeason,
-        isCatchAndRelease: isCatchAndRelease,
-        hasSizeLimit: hasSizeLimit,
-        isNotListedInZone: isNotListedInZone // Send the new flag
+        isOutOfSeason,
+        isCatchAndRelease,
+        hasSizeLimit,
+        isNotListedInZone,
+        additionalDetails // Send the new details
     });
 
   } catch (error) {
