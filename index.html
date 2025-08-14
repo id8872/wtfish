@@ -58,6 +58,7 @@
                             <button id="findZoneBtn" class="px-3 py-2 bg-gray-200 text-gray-700 rounded-md hover:bg-gray-300 text-sm interactive-element">Find</button>
                         </div>
                          <p id="zoneStatus" class="text-xs text-gray-500 mt-1 h-4"></p>
+                         <button id="viewSummaryBtn" class="mt-2 w-full text-sm text-blue-600 hover:underline">View Zone Summary</button>
                     </div>
                     <p class="text-sm text-gray-500 mb-4">Use your phone's camera or upload a file. For best results, use a clear, side-view image of the fish.</p>
                     
@@ -121,12 +122,30 @@
         </main>
     </div>
 
+    <!-- Zone Summary Modal -->
+    <div id="summaryModal" class="modal-overlay hidden">
+        <div class="modal-content">
+            <div class="flex justify-between items-center mb-4">
+                <h2 id="summaryModalTitle" class="text-2xl font-bold">Zone Summary</h2>
+                <button id="closeSummaryModal" class="text-2xl font-bold">&times;</button>
+            </div>
+            <div id="summaryModalContent">
+                <!-- Summary will be injected here -->
+            </div>
+        </div>
+    </div>
+
     <script>
         document.addEventListener('DOMContentLoaded', () => {
             // DOM Elements
             const fmzSelect = document.getElementById('fmzSelect');
             const findZoneBtn = document.getElementById('findZoneBtn');
             const zoneStatus = document.getElementById('zoneStatus');
+            const viewSummaryBtn = document.getElementById('viewSummaryBtn');
+            const summaryModal = document.getElementById('summaryModal');
+            const summaryModalTitle = document.getElementById('summaryModalTitle');
+            const summaryModalContent = document.getElementById('summaryModalContent');
+            const closeSummaryModal = document.getElementById('closeSummaryModal');
             const imageUpload = document.getElementById('imageUpload');
             const imagePreviewContainer = document.getElementById('imagePreviewContainer');
             const imagePreview = document.getElementById('imagePreview');
@@ -178,6 +197,40 @@
                 }, () => {
                     zoneStatus.textContent = 'Unable to retrieve your location.';
                 });
+            });
+
+            viewSummaryBtn.addEventListener('click', async () => {
+                const selectedFmz = fmzSelect.value;
+                summaryModalTitle.textContent = `Summary for ${selectedFmz}`;
+                summaryModalContent.innerHTML = '<div class="loader mx-auto"></div>';
+                summaryModal.classList.remove('hidden');
+
+                try {
+                    const response = await fetch('/api/get-zone-summary', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ fmz: selectedFmz })
+                    });
+                    const summaryData = await response.json();
+
+                    if (response.ok) {
+                        let summaryHtml = '<ul class="space-y-2">';
+                        summaryData.forEach(item => {
+                            const seasonClass = item.isOutOfSeason ? 'text-red-600 font-semibold' : 'text-gray-600';
+                            summaryHtml += `<li class="border-b pb-2"><strong class="text-gray-800">${item.species}:</strong> <span class="${seasonClass}">${item.season}</span></li>`;
+                        });
+                        summaryHtml += '</ul>';
+                        summaryModalContent.innerHTML = summaryHtml;
+                    } else {
+                        summaryModalContent.innerHTML = `<p class="text-red-600">${summaryData.error}</p>`;
+                    }
+                } catch (error) {
+                    summaryModalContent.innerHTML = `<p class="text-red-600">Failed to load summary.</p>`;
+                }
+            });
+
+            closeSummaryModal.addEventListener('click', () => {
+                summaryModal.classList.add('hidden');
             });
 
             const resizeImage = (file, maxWidth, maxHeight, quality) => {
