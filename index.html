@@ -3,6 +3,15 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <!-- NEW: Client-side maintenance mode script -->
+    <script>
+        // Vercel injects environment variables here.
+        // We check if the maintenance mode variable is set to 'true'.
+        if (process.env.MAINTENANCE_MODE === 'true') {
+            // If it is, we redirect to the out-of-service page.
+            window.location.href = '/oos.html';
+        }
+    </script>
     <title>WTFish!</title>
     <link rel="icon" type="image/png" href="assets/favicon.png">
     <script src="https://cdn.tailwindcss.com"></script>
