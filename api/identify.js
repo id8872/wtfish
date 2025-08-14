@@ -15,11 +15,9 @@ function isSeasonOpen(seasonString) {
     const now = new Date();
     const today = { month: now.getMonth() + 1, day: now.getDate() };
 
-    // --- NEW: Smarter date parsing logic ---
     const parseDate = (dateStr) => {
         const monthNames = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
         
-        // Handle complex text dates by converting them to a simple, parsable format
         const simplifiedStr = dateStr.trim()
             .replace(/first sat in/i, '')
             .replace(/second sat in/i, '')
@@ -34,8 +32,6 @@ function isSeasonOpen(seasonString) {
         
         if (monthIndex === -1) return null;
 
-        // If the original string had a complex date, we approximate the day to the 1st
-        // This is a safe approximation as it will correctly place the date within the month.
         const day = parts[1] ? parseInt(parts[1], 10) : 1;
 
         return {
@@ -55,7 +51,7 @@ function isSeasonOpen(seasonString) {
 
         if (!start || !end) continue;
 
-        if (start.month <= end.month) { // Season does not cross the new year
+        if (start.month <= end.month) { 
             if ((today.month > start.month || (today.month === start.month && today.day >= start.day)) &&
                 (today.month < end.month || (today.month === end.month && today.day <= end.day))) {
                 return true;
@@ -88,7 +84,12 @@ export default async function handler(request, response) {
         return response.status(400).json({ error: 'Missing image data or FMZ.' });
     }
 
-    const prompt = "Identify the species of fish in this image. This fish was likely caught in Ontario, Canada. Respond with only the common name of the fish, for example: 'Largemouth Bass' or 'Northern Pike'.";
+    // --- NEW: Dynamically build the prompt with a list of possible fish ---
+    const zoneRegs = regulations[fmz];
+    const possibleSpecies = zoneRegs ? Object.keys(zoneRegs).join(', ') : 'common Ontario sport fish';
+    const prompt = `From the following list of fish found in Ontario (${possibleSpecies}), identify the species of fish in this image. Respond with only the common name of the fish.`;
+    // --- END NEW PROMPT LOGIC ---
+
     const payload = {
       contents: [{
         parts: [
@@ -117,7 +118,6 @@ export default async function handler(request, response) {
         return response.status(500).json({ error: 'Could not identify the fish from the image.' });
     }
 
-    const zoneRegs = regulations[fmz];
     let speciesRegs = null;
     let isOutOfSeason = false;
     let isCatchAndRelease = false;
@@ -136,7 +136,6 @@ export default async function handler(request, response) {
                 isCatchAndRelease = true;
             }
             
-            // Check for keywords indicating a size limit
             const sizeKeywords = ['cm', '>', '<', 'between'];
             if (sizeKeywords.some(key => sportLimitText.includes(key) || conservationLimitText.includes(key))) {
                 hasSizeLimit = true;
@@ -149,7 +148,7 @@ export default async function handler(request, response) {
         regulations: speciesRegs,
         isOutOfSeason: isOutOfSeason,
         isCatchAndRelease: isCatchAndRelease,
-        hasSizeLimit: hasSizeLimit // Send the new flag
+        hasSizeLimit: hasSizeLimit
     });
 
   } catch (error) {
