@@ -83,15 +83,6 @@
                      <p id="fishResult" class="text-2xl font-bold text-gray-800 mb-4"></p>
                      <div id="regsContainer"></div>
                 </div>
-
-                <!-- NEW: Zone Summary Box -->
-                <div id="summaryContainer" class="hidden text-left p-4 bg-gray-50 rounded-lg border border-gray-200">
-                    <div class="flex justify-between items-center mb-2">
-                         <h3 id="summaryTitle" class="text-lg font-semibold text-gray-700">Zone Summary</h3>
-                         <button id="closeSummaryBtn" class="text-xl font-bold text-gray-500 hover:text-gray-800">&times;</button>
-                    </div>
-                     <div id="summaryContent" class="max-h-64 overflow-y-auto"></div>
-                </div>
                 
                  <div id="loader" class="hidden self-center">
                     <div class="loader"></div>
@@ -126,6 +117,15 @@
                 <button id="logCatchBtn" class="w-full bg-green-600 text-white font-bold py-3 px-4 rounded-lg hover:bg-green-700 transition duration-300 disabled:bg-gray-400 mt-6 interactive-element" disabled>
                     Open Fish ON-Line to Log Catch
                 </button>
+            </div>
+
+            <!-- NEW: Zone Summary Box (moved here and restyled) -->
+            <div id="summaryContainer" class="hidden md:col-span-2 bg-white p-6 rounded-lg shadow-md">
+                <div class="flex justify-between items-center mb-2">
+                     <h3 id="summaryTitle" class="text-lg font-semibold text-gray-700">Zone Summary</h3>
+                     <button id="closeSummaryBtn" class="text-xl font-bold text-gray-500 hover:text-gray-800">&times;</button>
+                </div>
+                 <div id="summaryContent" class="max-h-64 overflow-y-auto"></div>
             </div>
         </main>
     </div>
