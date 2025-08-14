@@ -17,7 +17,8 @@ export const regulations = {
         "Northern Pike": { "season": "Open all year", "limits": { "Sport": "S-4, none between 70-90 cm, not more than 1 > 90 cm", "Conservation": "C-2, none between 70-90 cm, not more than 1 > 90 cm" } },
         "Smallmouth Bass": { "season": "Open all year", "limits": { "Sport": "S-4 (Jul 1 - Nov 30), S-2 < 35 cm (rest of year)", "Conservation": "C-2 (Jul 1 - Nov 30), C-1 < 35 cm (rest of year)" } },
         "Largemouth Bass": { "season": "Open all year", "limits": { "Sport": "S-4 (Jul 1 - Nov 30), S-2 < 35 cm (rest of year)", "Conservation": "C-2 (Jul 1 - Nov 30), C-1 < 35 cm (rest of year)" } },
-        "Yellow Perch": { "season": "Open all year", "limits": { "Sport": "S-50", "Conservation": "C-25" } }
+        "Yellow Perch": { "season": "Open all year", "limits": { "Sport": "S-50", "Conservation": "C-25" } },
+        "Sunfish": { "season": "Open all year", "limits": { "Sport": "S-50", "Conservation": "C-25" } }
     },
     "FMZ 3": {
         "Brook Trout": { "season": "Jan 1 to Sep 15", "limits": { "Sport": "S-5", "Conservation": "C-2" } },
@@ -26,7 +27,8 @@ export const regulations = {
         "Northern Pike": { "season": "Open all year", "limits": { "Sport": "S-6, not more than 2 > 61 cm, of which not more than 1 > 86 cm", "Conservation": "C-2, not more than 1 > 61 cm, none > 86 cm" } },
         "Largemouth Bass": { "season": "Open all year", "limits": { "Sport": "S-6", "Conservation": "C-2" } },
         "Smallmouth Bass": { "season": "Open all year", "limits": { "Sport": "S-6", "Conservation": "C-2" } },
-        "Yellow Perch": { "season": "Open all year", "limits": { "Sport": "S-50", "Conservation": "C-25" } }
+        "Yellow Perch": { "season": "Open all year", "limits": { "Sport": "S-50", "Conservation": "C-25" } },
+        "Sunfish": { "season": "Open all year", "limits": { "Sport": "S-50", "Conservation": "C-25" } }
     },
     "FMZ 4": {
         "Brook Trout": { "season": "Jan 1 to Labour Day", "limits": { "Sport": "S-5, not more than 1 > 30 cm", "Conservation": "C-2, not more than 1 > 30 cm" } },
@@ -36,7 +38,9 @@ export const regulations = {
         "Muskellunge": { "season": "Third Sat in June to Dec 15", "limits": { "Sport": "S-1 > 102 cm", "Conservation": "C-0" } },
         "Smallmouth Bass": { "season": "Open all year", "limits": { "Sport": "S-4 (Jul 1 - Nov 30), S-2 < 35 cm (rest of year)", "Conservation": "C-2 (Jul 1 - Nov 30), C-1 < 35 cm (rest of year)" } },
         "Largemouth Bass": { "season": "Open all year", "limits": { "Sport": "S-4 (Jul 1 - Nov 30), S-2 < 35 cm (rest of year)", "Conservation": "C-2 (Jul 1 - Nov 30), C-1 < 35 cm (rest of year)" } },
-        "Yellow Perch": { "season": "Open all year", "limits": { "Sport": "S-50", "Conservation": "C-25" } }
+        "Yellow Perch": { "season": "Open all year", "limits": { "Sport": "S-50", "Conservation": "C-25" } },
+        "Crappie": { "season": "Open all year", "limits": { "Sport": "S-15", "Conservation": "C-10" } },
+        "Sunfish": { "season": "Open all year", "limits": { "Sport": "S-50", "Conservation": "C-25" } }
     },
     "FMZ 5": {
         "Brook Trout": { "season": "Open all year", "limits": { "Sport": "S-5", "Conservation": "C-2" } },
@@ -46,7 +50,11 @@ export const regulations = {
         "Muskellunge": { "season": "Third Sat in June to Dec 15", "limits": { "Sport": "S-1 > 102 cm", "Conservation": "C-0" } },
         "Largemouth Bass": { "season": "Open all year", "limits": { "Sport": "S-4, must be < 35 cm from Jan 1 to June 30", "Conservation": "C-2, must be < 35 cm from Jan 1 to June 30" } },
         "Smallmouth Bass": { "season": "Open all year", "limits": { "Sport": "S-4, must be < 35 cm from Jan 1 to June 30", "Conservation": "C-2, must be < 35 cm from Jan 1 to June 30" } },
-        "Yellow Perch": { "season": "Open all year", "limits": { "Sport": "S-50", "Conservation": "C-25" } }
+        "Yellow Perch": { "season": "Open all year", "limits": { "Sport": "S-50", "Conservation": "C-25" } },
+        "Brown Trout": { "season": "Open all year", "limits": { "Sport": "S-5", "Conservation": "C-2" } },
+        "Crappie": { "season": "Open all year", "limits": { "Sport": "S-10", "Conservation": "C-5" } },
+        "Splake": { "season": "Open all year", "limits": { "Sport": "S-5", "Conservation": "C-2" } },
+        "Sunfish": { "season": "Open all year", "limits": { "Sport": "S-50", "Conservation": "C-25" } }
     },
     "FMZ 6": {
         "Brook Trout": { "season": "Fourth Sat in April to Labour Day", "limits": { "Sport": "S-5, not more than 1 > 30 cm", "Conservation": "C-2, not more than 1 > 30 cm" } },
@@ -55,28 +63,59 @@ export const regulations = {
         "Northern Pike": { "season": "Open all year", "limits": { "Sport": "S-4, not more than 1 >= 70 cm", "Conservation": "C-2, not more than 1 >= 70 cm" } },
         "Largemouth Bass": { "season": "Open all year", "limits": { "Sport": "S-4", "Conservation": "C-2" } },
         "Smallmouth Bass": { "season": "Open all year", "limits": { "Sport": "S-4", "Conservation": "C-2" } },
-        "Yellow Perch": { "season": "Open all year", "limits": { "Sport": "S-50", "Conservation": "C-25" } }
+        "Yellow Perch": { "season": "Open all year", "limits": { "Sport": "S-50", "Conservation": "C-25" } },
+        "Atlantic Salmon": { "season": "Open all year", "limits": { "Sport": "S-1", "Conservation": "C-0" } },
+        "Brown Trout": { "season": "Open all year", "limits": { "Sport": "S-5", "Conservation": "C-2" } },
+        "Channel Catfish": { "season": "Open all year", "limits": { "Sport": "S-12", "Conservation": "C-6" } },
+        "Crappie": { "season": "Open all year", "limits": { "Sport": "S-15", "Conservation": "C-10" } },
+        "Muskellunge": { "season": "Third Sat in June to Dec 15", "limits": { "Sport": "S-1 > 91 cm", "Conservation": "C-0" } },
+        "Pacific Salmon": { "season": "Open all year", "limits": { "Sport": "S-5", "Conservation": "C-2" } },
+        "Rainbow Trout": { "season": "Open all year", "limits": { "Sport": "S-1", "Conservation": "C-0" } },
+        "Splake": { "season": "Open all year", "limits": { "Sport": "S-5", "Conservation": "C-2" } },
+        "Sunfish": { "season": "Open all year", "limits": { "Sport": "S-50", "Conservation": "C-25" } }
     },
     "FMZ 7": {
         "Brook Trout": { "season": "Jan 1 to Labour Day", "limits": { "Sport": "S-5, not more than 2 > 30 cm, of which not more than 1 > 40 cm", "Conservation": "C-2, not more than 1 > 30 cm, none > 40 cm" } },
         "Lake Trout": { "season": "Jan 1 to Sep 30", "limits": { "Sport": "S-2", "Conservation": "C-1" } },
         "Walleye": { "season": "Jan 1 to Apr 14 & third Sat in May to Dec 31", "limits": { "Sport": "S-4, not more than 1 > 46 cm", "Conservation": "C-2, not more than 1 > 46 cm" } },
         "Northern Pike": { "season": "Open all year", "limits": { "Sport": "S-6, not more than 2 > 61 cm, of which not more than 1 > 86 cm", "Conservation": "C-2, not more than 1 > 61 cm, none > 86 cm" } },
-        "Yellow Perch": { "season": "Open all year", "limits": { "Sport": "S-50", "Conservation": "C-25" } }
+        "Yellow Perch": { "season": "Open all year", "limits": { "Sport": "S-50", "Conservation": "C-25" } },
+        "Atlantic Salmon": { "season": "Open all year", "limits": { "Sport": "S-1", "Conservation": "C-0" } },
+        "Brown Trout": { "season": "Open all year", "limits": { "Sport": "S-5", "Conservation": "C-2" } },
+        "Largemouth Bass": { "season": "Open all year", "limits": { "Sport": "S-6", "Conservation": "C-2" } },
+        "Smallmouth Bass": { "season": "Open all year", "limits": { "Sport": "S-6", "Conservation": "C-2" } },
+        "Pacific Salmon": { "season": "Open all year", "limits": { "Sport": "S-5", "Conservation": "C-2" } },
+        "Rainbow Trout": { "season": "Open all year", "limits": { "Sport": "S-1", "Conservation": "C-0" } },
+        "Splake": { "season": "Open all year", "limits": { "Sport": "S-5", "Conservation": "C-2" } },
+        "Sunfish": { "season": "Open all year", "limits": { "Sport": "S-50", "Conservation": "C-25" } }
     },
     "FMZ 8": {
         "Brook Trout": { "season": "Jan 1 to Sep 15", "limits": { "Sport": "S-5", "Conservation": "C-2" } },
         "Lake Trout": { "season": "Feb 15 to Mar 15 & third Sat in May to Sep 30", "limits": { "Sport": "S-3", "Conservation": "C-1" } },
         "Walleye": { "season": "Jan 1 to Apr 14 & third Sat in May to Dec 31", "limits": { "Sport": "S-4, not more than 1 > 46 cm", "Conservation": "C-2, not more than 1 > 46 cm" } },
         "Northern Pike": { "season": "Open all year", "limits": { "Sport": "S-6, not more than 2 > 61 cm, of which not more than 1 > 86 cm", "Conservation": "C-2, not more than 1 > 61 cm, none > 86 cm" } },
-        "Yellow Perch": { "season": "Open all year", "limits": { "Sport": "S-50", "Conservation": "C-25" } }
+        "Yellow Perch": { "season": "Open all year", "limits": { "Sport": "S-50", "Conservation": "C-25" } },
+        "Largemouth Bass": { "season": "Open all year", "limits": { "Sport": "S-6", "Conservation": "C-2" } },
+        "Smallmouth Bass": { "season": "Open all year", "limits": { "Sport": "S-6", "Conservation": "C-2" } },
+        "Rainbow Trout": { "season": "Open all year", "limits": { "Sport": "S-5", "Conservation": "C-2" } },
+        "Splake": { "season": "Open all year", "limits": { "Sport": "S-5", "Conservation": "C-2" } },
+        "Sunfish": { "season": "Open all year", "limits": { "Sport": "S-50", "Conservation": "C-25" } }
     },
     "FMZ 9": {
         "Brook Trout": { "season": "Fourth Sat in April to Labour Day", "limits": { "Sport": "S-1 > 56 cm", "Conservation": "C-0" } },
         "Lake Trout": { "season": "Jan 1 to Sep 30", "limits": { "Sport": "S-3", "Conservation": "C-1" } },
         "Walleye": { "season": "Jan 1 to Apr 14 & third Sat in May to Dec 31", "limits": { "Sport": "S-2", "Conservation": "C-1" } },
         "Northern Pike": { "season": "Open all year", "limits": { "Sport": "S-4, none between 70-90 cm, not more than 1 > 90 cm", "Conservation": "C-2, none between 70-90 cm, not more than 1 > 90 cm" } },
-        "Yellow Perch": { "season": "Open all year", "limits": { "Sport": "S-25", "Conservation": "C-12" } }
+        "Yellow Perch": { "season": "Open all year", "limits": { "Sport": "S-25", "Conservation": "C-12" } },
+        "Atlantic Salmon": { "season": "Open all year", "limits": { "Sport": "S-1", "Conservation": "C-0" } },
+        "Brown Trout": { "season": "Open all year", "limits": { "Sport": "S-5", "Conservation": "C-2" } },
+        "Channel Catfish": { "season": "Open all year", "limits": { "Sport": "S-12", "Conservation": "C-6" } },
+        "Crappie": { "season": "Open all year", "limits": { "Sport": "S-30", "Conservation": "C-10" } },
+        "Muskellunge": { "season": "Third Sat in June to Dec 15", "limits": { "Sport": "S-1 > 91 cm", "Conservation": "C-0" } },
+        "Pacific Salmon": { "season": "Open all year", "limits": { "Sport": "S-5", "Conservation": "C-2" } },
+        "Rainbow Trout": { "season": "Open all year", "limits": { "Sport": "S-1", "Conservation": "C-0" } },
+        "Splake": { "season": "Jan 1 to Sep 30", "limits": { "Sport": "S-3", "Conservation": "C-1" } },
+        "Sunfish": { "season": "Open all year", "limits": { "Sport": "S-50", "Conservation": "C-25" } }
     },
     "FMZ 10": {
         "Brook Trout": { "season": "Jan 1 to Sep 30", "limits": { "Sport": "S-5", "Conservation": "C-2" } },
@@ -84,7 +123,15 @@ export const regulations = {
         "Walleye": { "season": "Jan 1 to third Sun in Mar & third Sat in May to Dec 31", "limits": { "Sport": "S-4, none > 46 cm", "Conservation": "C-2, none > 46 cm" } },
         "Northern Pike": { "season": "Open all year", "limits": { "Sport": "S-6, not more than 1 > 61 cm, none > 86 cm", "Conservation": "C-2, none > 61 cm" } },
         "Muskellunge": { "season": "Third Sat in June to Dec 15", "limits": { "Sport": "S-1 > 122 cm", "Conservation": "C-0" } },
-        "Yellow Perch": { "season": "Open all year", "limits": { "Sport": "S-50", "Conservation": "C-25" } }
+        "Yellow Perch": { "season": "Open all year", "limits": { "Sport": "S-50", "Conservation": "C-25" } },
+        "Atlantic Salmon": { "season": "Jan 1 to Sep 30", "limits": { "Sport": "S-1", "Conservation": "C-0" } },
+        "Brown Trout": { "season": "Open all year", "limits": { "Sport": "S-5", "Conservation": "C-2" } },
+        "Channel Catfish": { "season": "Open all year", "limits": { "Sport": "S-12", "Conservation": "C-6" } },
+        "Crappie": { "season": "Open all year", "limits": { "Sport": "S-30", "Conservation": "C-10" } },
+        "Pacific Salmon": { "season": "Open all year", "limits": { "Sport": "S-5", "Conservation": "C-2" } },
+        "Rainbow Trout": { "season": "Open all year", "limits": { "Sport": "S-2", "Conservation": "C-1" } },
+        "Splake": { "season": "Open all year", "limits": { "Sport": "S-5", "Conservation": "C-2" } },
+        "Sunfish": { "season": "Open all year", "limits": { "Sport": "S-50", "Conservation": "C-25" } }
     },
     "FMZ 11": {
         "Brook Trout": { "season": "Feb 15 to Sep 30", "limits": { "Sport": "S-5, not more than 1 > 31 cm", "Conservation": "C-2, none > 31 cm" } },
@@ -92,7 +139,14 @@ export const regulations = {
         "Walleye": { "season": "Jan 1 to third Sun in Mar & third Sat in May to Dec 31", "limits": { "Sport": "S-4, none between 43-60 cm, not more than 1 > 60 cm", "Conservation": "C-2, none between 43-60 cm, not more than 1 > 60 cm" } },
         "Northern Pike": { "season": "Jan 1 to third Sun in Mar & third Sat in May to Dec 31", "limits": { "Sport": "S-6, not more than 2 > 61 cm, of which not more than 1 > 86 cm", "Conservation": "C-2, not more than 1 > 61 cm, none > 86 cm" } },
         "Muskellunge": { "season": "Third Sat in June to Dec 15", "limits": { "Sport": "S-1 > 122 cm", "Conservation": "C-0" } },
-        "Yellow Perch": { "season": "Open all year", "limits": { "Sport": "S-50", "Conservation": "C-25" } }
+        "Yellow Perch": { "season": "Open all year", "limits": { "Sport": "S-50", "Conservation": "C-25" } },
+        "Brown Trout": { "season": "Fourth Sat in April to Sep 30", "limits": { "Sport": "S-5", "Conservation": "C-2" } },
+        "Channel Catfish": { "season": "Open all year", "limits": { "Sport": "S-12", "Conservation": "C-6" } },
+        "Crappie": { "season": "Open all year", "limits": { "Sport": "S-30", "Conservation": "C-10" } },
+        "Pacific Salmon": { "season": "Open all year", "limits": { "Sport": "S-5", "Conservation": "C-2" } },
+        "Rainbow Trout": { "season": "Open all year", "limits": { "Sport": "S-5", "Conservation": "C-2" } },
+        "Splake": { "season": "Open all year", "limits": { "Sport": "S-5", "Conservation": "C-2" } },
+        "Sunfish": { "season": "Open all year", "limits": { "Sport": "S-50", "Conservation": "C-25" } }
     },
     "FMZ 12": {
         "Brook Trout": { "season": "Fri before fourth Sat in April to Sep 30", "limits": { "Sport": "S-5", "Conservation": "C-2" } },
@@ -100,21 +154,42 @@ export const regulations = {
         "Walleye": { "season": "Jan 1 to Mar 31 & Fri before third Sat in May to Dec 31", "limits": { "Sport": "S-5, must be < 40 cm from Mar 1 to June 15", "Conservation": "C-2, must be < 40 cm from Mar 1 to June 15" } },
         "Northern Pike": { "season": "Jan 1 to Mar 31 & Fri before third Sat in May to Dec 31", "limits": { "Sport": "S-6", "Conservation": "C-2" } },
         "Muskellunge": { "season": "Fri before third Sat in June to Dec 15", "limits": { "Sport": "S-1 > 137 cm", "Conservation": "C-0" } },
-        "Yellow Perch": { "season": "Open all year", "limits": { "Sport": "S-50", "Conservation": "C-25" } }
+        "Yellow Perch": { "season": "Open all year", "limits": { "Sport": "S-50", "Conservation": "C-25" } },
+        "Atlantic Salmon": { "season": "Fri before fourth Sat in April to Sep 30", "limits": { "Sport": "S-1", "Conservation": "C-0" } },
+        "Brown Trout": { "season": "Fri before fourth Sat in April to Sep 30", "limits": { "Sport": "S-5", "Conservation": "C-2" } },
+        "Channel Catfish": { "season": "Open all year", "limits": { "Sport": "S-12", "Conservation": "C-6" } },
+        "Crappie": { "season": "Open all year", "limits": { "Sport": "S-30", "Conservation": "C-10" } },
+        "Rainbow Trout": { "season": "Fri before fourth Sat in April to Sep 30", "limits": { "Sport": "S-5", "Conservation": "C-2" } },
+        "Splake": { "season": "Fri before fourth Sat in April to Sep 30", "limits": { "Sport": "S-2 > 45 cm", "Conservation": "C-1 > 45 cm" } },
+        "Sunfish": { "season": "Open all year", "limits": { "Sport": "No limit", "Conservation": "No limit" } }
     },
     "FMZ 13": {
         "Lake Trout": { "season": "Jan 1 to Sep 30 & Dec 1 to Dec 31", "limits": { "Sport": "S-2", "Conservation": "C-1" } },
         "Walleye": { "season": "Open all year", "limits": { "Sport": "S-6", "Conservation": "C-2" } },
         "Northern Pike": { "season": "Open all year", "limits": { "Sport": "S-4", "Conservation": "C-2" } },
         "Muskellunge": { "season": "Third Sat in June to Dec 15", "limits": { "Sport": "S-1 > 102 cm", "Conservation": "C-0" } },
-        "Yellow Perch": { "season": "Open all year", "limits": { "Sport": "S-50", "Conservation": "C-25" } }
+        "Yellow Perch": { "season": "Open all year", "limits": { "Sport": "S-50", "Conservation": "C-25" } },
+        "Atlantic Salmon": { "season": "Open all year", "limits": { "Sport": "S-1", "Conservation": "C-0" } },
+        "Brown Trout": { "season": "Open all year", "limits": { "Sport": "S-5", "Conservation": "C-2" } },
+        "Channel Catfish": { "season": "Open all year", "limits": { "Sport": "S-12", "Conservation": "C-6" } },
+        "Crappie": { "season": "Open all year", "limits": { "Sport": "S-30", "Conservation": "C-10" } },
+        "Pacific Salmon": { "season": "Open all year", "limits": { "Sport": "S-5", "Conservation": "C-2" } },
+        "Rainbow Trout": { "season": "Open all year", "limits": { "Sport": "S-2", "Conservation": "C-1" } },
+        "Sunfish": { "season": "Open all year", "limits": { "Sport": "S-50", "Conservation": "C-25" } }
     },
     "FMZ 14": {
         "Lake Trout": { "season": "Jan 1 to Sep 30 & Dec 1 to Dec 31", "limits": { "Sport": "S-2", "Conservation": "C-1" } },
         "Walleye": { "season": "Jan 1 to Mar 1 & May 1 to Dec 31", "limits": { "Sport": "S-2 (possession 4), none between 41-56 cm, not more than 1 > 56 cm", "Conservation": "C-1 (possession 2), none between 41-56 cm, not more than 1 > 56 cm" } },
         "Northern Pike": { "season": "Jan 1 to Mar 1 & May 1 to Dec 31", "limits": { "Sport": "S-2 (possession 4), not more than 1 > 86 cm", "Conservation": "C-1 (possession 2), not more than 1 > 86 cm" } },
         "Muskellunge": { "season": "Third Sat in June to Dec 15", "limits": { "Sport": "S-1 > 137 cm", "Conservation": "C-0" } },
-        "Yellow Perch": { "season": "Open all year", "limits": { "Sport": "S-25 (possession 50)", "Conservation": "C-12 (possession 25)" } }
+        "Yellow Perch": { "season": "Open all year", "limits": { "Sport": "S-25 (possession 50)", "Conservation": "C-12 (possession 25)" } },
+        "Atlantic Salmon": { "season": "Open all year", "limits": { "Sport": "S-1", "Conservation": "C-0" } },
+        "Brown Trout": { "season": "Open all year", "limits": { "Sport": "S-5", "Conservation": "C-2" } },
+        "Channel Catfish": { "season": "Open all year", "limits": { "Sport": "S-12", "Conservation": "C-6" } },
+        "Crappie": { "season": "Open all year", "limits": { "Sport": "S-30", "Conservation": "C-10" } },
+        "Pacific Salmon": { "season": "Open all year", "limits": { "Sport": "S-5", "Conservation": "C-2" } },
+        "Rainbow Trout": { "season": "Open all year", "limits": { "Sport": "S-2", "Conservation": "C-1" } },
+        "Sunfish": { "season": "Open all year", "limits": { "Sport": "S-50", "Conservation": "C-25" } }
     },
     "FMZ 15": {
         "Brook Trout": { "season": "Jan 1 to Sep 30", "limits": { "Sport": "S-5", "Conservation": "C-2" } },
@@ -122,7 +197,14 @@ export const regulations = {
         "Walleye": { "season": "Jan 1 to Mar 15 & third Sat in May to Dec 31", "limits": { "Sport": "S-4, not more than 1 > 46 cm", "Conservation": "C-2, not more than 1 > 46 cm" } },
         "Northern Pike": { "season": "Jan 1 to Mar 31 & third Sat in May to Dec 31", "limits": { "Sport": "S-6", "Conservation": "C-2" } },
         "Muskellunge": { "season": "First Sat in June to Dec 15", "limits": { "Sport": "S-1 > 91 cm", "Conservation": "C-0" } },
-        "Yellow Perch": { "season": "Open all year", "limits": { "Sport": "S-50", "Conservation": "C-25" } }
+        "Yellow Perch": { "season": "Open all year", "limits": { "Sport": "S-50", "Conservation": "C-25" } },
+        "Brown Trout": { "season": "Open all year", "limits": { "Sport": "S-5", "Conservation": "C-2" } },
+        "Channel Catfish": { "season": "Open all year", "limits": { "Sport": "S-12", "Conservation": "C-6" } },
+        "Crappie": { "season": "Open all year", "limits": { "Sport": "S-30", "Conservation": "C-10" } },
+        "Pacific Salmon": { "season": "Open all year", "limits": { "Sport": "S-5", "Conservation": "C-2" } },
+        "Rainbow Trout": { "season": "Open all year", "limits": { "Sport": "S-5", "Conservation": "C-2" } },
+        "Splake": { "season": "Open all year", "limits": { "Sport": "S-5", "Conservation": "C-2" } },
+        "Sunfish": { "season": "Open all year", "limits": { "Sport": "S-50", "Conservation": "C-25" } }
     },
     "FMZ 16": {
         "Brook Trout": { "season": "Fourth Sat in April to Sep 30", "limits": { "Sport": "S-5", "Conservation": "C-2" } },
@@ -130,7 +212,15 @@ export const regulations = {
         "Walleye": { "season": "Jan 1 to Mar 15 & second Sat in May to Dec 31", "limits": { "Sport": "S-4, not more than 1 > 46 cm", "Conservation": "C-2, not more than 1 > 46 cm" } },
         "Northern Pike": { "season": "Jan 1 to Mar 31 & second Sat in May to Dec 31", "limits": { "Sport": "S-6", "Conservation": "C-2" } },
         "Muskellunge": { "season": "First Sat in June to Dec 15", "limits": { "Sport": "S-1 > 91 cm", "Conservation": "C-0" } },
-        "Yellow Perch": { "season": "Open all year", "limits": { "Sport": "S-50", "Conservation": "C-25" } }
+        "Yellow Perch": { "season": "Open all year", "limits": { "Sport": "S-50", "Conservation": "C-25" } },
+        "Atlantic Salmon": { "season": "Fourth Sat in April to Sep 30", "limits": { "Sport": "S-0", "Conservation": "C-0" } },
+        "Brown Trout": { "season": "Fourth Sat in April to Sep 30", "limits": { "Sport": "S-5", "Conservation": "C-2" } },
+        "Channel Catfish": { "season": "Open all year", "limits": { "Sport": "S-12", "Conservation": "C-6" } },
+        "Crappie": { "season": "Open all year", "limits": { "Sport": "S-30", "Conservation": "C-10" } },
+        "Pacific Salmon": { "season": "Fourth Sat in April to Sep 30", "limits": { "Sport": "S-5", "Conservation": "C-2" } },
+        "Rainbow Trout": { "season": "Fourth Sat in April to Sep 30", "limits": { "Sport": "S-2", "Conservation": "C-1" } },
+        "Splake": { "season": "Open all year", "limits": { "Sport": "S-5", "Conservation": "C-2" } },
+        "Sunfish": { "season": "Open all year", "limits": { "Sport": "S-50", "Conservation": "C-25" } }
     },
     "FMZ 17": {
         "Brook Trout": { "season": "Fourth Sat in April to Sep 30", "limits": { "Sport": "S-2", "Conservation": "C-1" } },
@@ -138,7 +228,14 @@ export const regulations = {
         "Walleye": { "season": "Second Sat in May to Nov 15", "limits": { "Sport": "S-4, must be between 35-50 cm", "Conservation": "C-1, must be between 35-50 cm" } },
         "Northern Pike": { "season": "Open all year", "limits": { "Sport": "S-6", "Conservation": "C-2" } },
         "Muskellunge": { "season": "First Sat in June to Dec 15", "limits": { "Sport": "S-1 > 112 cm", "Conservation": "C-0" } },
-        "Yellow Perch": { "season": "Open all year", "limits": { "Sport": "S-50", "Conservation": "C-25" } }
+        "Yellow Perch": { "season": "Open all year", "limits": { "Sport": "S-50", "Conservation": "C-25" } },
+        "Atlantic Salmon": { "season": "Fourth Sat in April to Sep 30", "limits": { "Sport": "S-0", "Conservation": "C-0" } },
+        "Brown Trout": { "season": "Fourth Sat in April to Sep 30", "limits": { "Sport": "S-5", "Conservation": "C-2" } },
+        "Channel Catfish": { "season": "Fourth Sat in April to Nov 15", "limits": { "Sport": "S-12", "Conservation": "C-6" } },
+        "Crappie": { "season": "Open all year", "limits": { "Sport": "S-30", "Conservation": "C-10" } },
+        "Pacific Salmon": { "season": "Fourth Sat in April to Sep 30", "limits": { "Sport": "S-5", "Conservation": "C-2" } },
+        "Rainbow Trout": { "season": "Fourth Sat in April to Sep 30", "limits": { "Sport": "S-2", "Conservation": "C-1" } },
+        "Sunfish": { "season": "Open all year", "limits": { "Sport": "S-300, only 30 > 18 cm", "Conservation": "C-15" } }
     },
     "FMZ 18": {
         "Brook Trout": { "season": "Open all year", "limits": { "Sport": "S-5", "Conservation": "C-2" } },
@@ -146,14 +243,28 @@ export const regulations = {
         "Walleye": { "season": "Jan 1 to Mar 1 & second Sat in May to Dec 31", "limits": { "Sport": "S-4, must be between 40-50 cm", "Conservation": "C-2, must be between 40-50 cm" } },
         "Northern Pike": { "season": "Jan 1 to Mar 31 & second Sat in May to Dec 31", "limits": { "Sport": "S-6", "Conservation": "C-2" } },
         "Muskellunge": { "season": "First Sat in June to Dec 15", "limits": { "Sport": "S-1 > 91 cm", "Conservation": "C-0" } },
-        "Yellow Perch": { "season": "Open all year", "limits": { "Sport": "S-50", "Conservation": "C-25" } }
+        "Yellow Perch": { "season": "Open all year", "limits": { "Sport": "S-50", "Conservation": "C-25" } },
+        "Brown Trout": { "season": "Open all year", "limits": { "Sport": "S-5", "Conservation": "C-2" } },
+        "Channel Catfish": { "season": "Open all year", "limits": { "Sport": "S-12", "Conservation": "C-6" } },
+        "Crappie": { "season": "Open all year", "limits": { "Sport": "S-30", "Conservation": "C-10" } },
+        "Pacific Salmon": { "season": "Open all year", "limits": { "Sport": "S-5", "Conservation": "C-2" } },
+        "Rainbow Trout": { "season": "Open all year", "limits": { "Sport": "S-5", "Conservation": "C-2" } },
+        "Splake": { "season": "Open all year", "limits": { "Sport": "S-5", "Conservation": "C-2" } },
+        "Sunfish": { "season": "Open all year", "limits": { "Sport": "S-300, only 30 > 18 cm", "Conservation": "C-15" } }
     },
     "FMZ 19": {
         "Lake Trout": { "season": "Jan 1 to Sep 30 & Dec 1 to Dec 31", "limits": { "Sport": "S-3", "Conservation": "C-1" } },
         "Walleye": { "season": "Open all year", "limits": { "Sport": "S-6", "Conservation": "C-2" } },
         "Northern Pike": { "season": "Open all year", "limits": { "Sport": "S-6", "Conservation": "C-2" } },
         "Muskellunge": { "season": "First Sat in June to Dec 15", "limits": { "Sport": "S-1 > 112 cm", "Conservation": "C-0" } },
-        "Yellow Perch": { "season": "Open all year", "limits": { "Sport": "S-50 (possession 100)", "Conservation": "C-25 (possession 50)" } }
+        "Yellow Perch": { "season": "Open all year", "limits": { "Sport": "S-50 (possession 100)", "Conservation": "C-25 (possession 50)" } },
+        "Atlantic Salmon": { "season": "Open all year", "limits": { "Sport": "S-1", "Conservation": "C-0" } },
+        "Brown Trout": { "season": "Open all year", "limits": { "Sport": "S-5", "Conservation": "C-2" } },
+        "Channel Catfish": { "season": "Open all year", "limits": { "Sport": "S-12", "Conservation": "C-6" } },
+        "Crappie": { "season": "Open all year", "limits": { "Sport": "S-30", "Conservation": "C-10" } },
+        "Pacific Salmon": { "season": "Open all year", "limits": { "Sport": "S-5", "Conservation": "C-2" } },
+        "Rainbow Trout": { "season": "Open all year", "limits": { "Sport": "S-5", "Conservation": "C-2" } },
+        "Sunfish": { "season": "Open all year", "limits": { "Sport": "S-100", "Conservation": "C-50" } }
     },
     "FMZ 20": {
         "Lake Trout": { "season": "Jan 1 to Sep 30 & Dec 1 to Dec 31", "limits": { "Sport": "S-3", "Conservation": "C-1" } },
@@ -162,6 +273,13 @@ export const regulations = {
         "Muskellunge": { "season": "Third Sat in June to Dec 15", "limits": { "Sport": "S-1 > 137 cm", "Conservation": "C-0" } },
         "Largemouth Bass": { "season": "Third Sat in June to Dec 31", "limits": { "Sport": "S-6", "Conservation": "C-2" } },
         "Smallmouth Bass": { "season": "First Sat in July to Dec 31", "limits": { "Sport": "S-6", "Conservation": "C-2" } },
-        "Yellow Perch": { "season": "Open all year", "limits": { "Sport": "S-50", "Conservation": "C-25" } }
+        "Yellow Perch": { "season": "Open all year", "limits": { "Sport": "S-50", "Conservation": "C-25" } },
+        "Atlantic Salmon": { "season": "Open all year", "limits": { "Sport": "S-1 > 63 cm", "Conservation": "C-0" } },
+        "Brown Trout": { "season": "Open all year", "limits": { "Sport": "S-5", "Conservation": "C-2" } },
+        "Channel Catfish": { "season": "Open all year", "limits": { "Sport": "S-12", "Conservation": "C-6" } },
+        "Crappie": { "season": "Open all year", "limits": { "Sport": "S-30", "Conservation": "C-10" } },
+        "Pacific Salmon": { "season": "Open all year", "limits": { "Sport": "S-5", "Conservation": "C-2" } },
+        "Rainbow Trout": { "season": "Open all year", "limits": { "Sport": "S-2", "Conservation": "C-1" } },
+        "Sunfish": { "season": "Open all year", "limits": { "Sport": "S-100", "Conservation": "C-50" } }
     }
 };
