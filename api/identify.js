@@ -86,7 +86,7 @@ export default async function handler(request, response) {
 
     const zoneRegs = regulations[fmz];
     const possibleSpecies = zoneRegs ? Object.keys(zoneRegs).join(', ') : 'common Ontario sport fish';
-    const identifyPrompt = `From the following list of fish found in Ontario (${possibleSpecies}), identify the species of fish in this image. Respond with only the common name of the fish.`;
+    const identifyPrompt = `From the following list of fish found in Ontario (${possibleSpecies}), identify the species of fish in this image. Respond with only the common name of the fish. Do not add any other text.`;
 
     const payload = {
       contents: [{
@@ -116,9 +116,7 @@ export default async function handler(request, response) {
         return response.status(500).json({ error: 'Could not identify the fish from the image.' });
     }
     
-    // --- NEW: Clean up the AI response to get just the name ---
     identifiedSpecies = identifiedSpecies.replace(/^the fish in the image is a /i, '').replace(/\.$/, '');
-
 
     let speciesRegs = null;
     let isOutOfSeason = false;
@@ -146,8 +144,7 @@ export default async function handler(request, response) {
             }
         } else {
             isNotListedInZone = true;
-            // --- NEW: If fish is not in the zone, get more details about it ---
-            const detailsPrompt = `Provide a brief, one-sentence description of where a ${identifiedSpecies} is typically found.`;
+            const detailsPrompt = `Provide a concise, one-sentence description for the fish named "${identifiedSpecies}". Start the sentence with the fish name, include its scientific name in parentheses if common, and describe its typical habitat or location. Example: "Butterfish, also known as Atlantic butterfish (Peprilus triacanthus), are small, silvery, flat-bodied fish found in the Atlantic Ocean."`;
             const detailsPayload = { contents: [{ parts: [{ text: detailsPrompt }] }] };
             const detailsResponse = await fetch(apiUrl, {
                 method: 'POST',
@@ -168,7 +165,7 @@ export default async function handler(request, response) {
         isCatchAndRelease,
         hasSizeLimit,
         isNotListedInZone,
-        additionalDetails // Send the new details
+        additionalDetails
     });
 
   } catch (error) {
