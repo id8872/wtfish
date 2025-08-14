@@ -1,12 +1,11 @@
 // File: api/identify.js
-// This function now handles multipart/form-data uploads.
+// This function now includes exponential backoff to handle temporary API errors.
 
 import { regulations } from './regulations.js';
 import formidable from 'formidable';
 import fs from 'fs';
 
 // --- Vercel Configuration ---
-// Disable the default body parser to handle the multipart/form-data stream ourselves.
 export const config = {
     api: {
         bodyParser: false,
@@ -44,6 +43,28 @@ function isSeasonOpen(seasonString) {
     return false;
 }
 
+// --- NEW: Helper function for API calls with exponential backoff ---
+async function fetchWithRetry(url, options, retries = 4) {
+    let delay = 1000; // Start with a 1-second delay
+    for (let i = 0; i < retries; i++) {
+        try {
+            const response = await fetch(url, options);
+            if (response.status === 503) { // If the model is overloaded, wait and retry
+                await new Promise(resolve => setTimeout(resolve, delay));
+                delay *= 2; // Double the delay for the next retry
+                continue; // Go to the next iteration of the loop
+            }
+            return response; // If the request was successful or failed for another reason, return it
+        } catch (error) {
+            if (i === retries - 1) throw error; // If it's the last retry, throw the error
+            await new Promise(resolve => setTimeout(resolve, delay));
+            delay *= 2;
+        }
+    }
+    throw new Error("API is overloaded. Please try again later.");
+}
+
+
 // --- Main Handler ---
 export default async function handler(request, response) {
     const apiKey = process.env.GOOGLE_API_KEY;
@@ -51,9 +72,8 @@ export default async function handler(request, response) {
         return response.status(500).json({ error: 'API key is not configured.' });
     }
 
-    // --- New: Parse the multipart form data ---
     const form = formidable({
-        maxFileSize: 4 * 1024 * 1024, // 4MB limit
+        maxFileSize: 4 * 1024 * 1024,
     });
 
     try {
@@ -66,7 +86,6 @@ export default async function handler(request, response) {
             return response.status(400).json({ error: 'Missing form data (fmz or photo).' });
         }
         
-        // --- Convert the uploaded file to Base64 for the Gemini API ---
         const imageData = fs.readFileSync(photo.filepath).toString('base64');
 
         const zoneRegs = regulations[fmz];
@@ -76,7 +95,8 @@ export default async function handler(request, response) {
         const payload = { contents: [{ parts: [{ text: identifyPrompt }, { inlineData: { mimeType: photo.mimetype, data: imageData } }] }] };
         const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash-latest:generateContent?key=${apiKey}`;
 
-        const apiResponse = await fetch(apiUrl, {
+        // --- UPDATED: Use the new fetchWithRetry function ---
+        const apiResponse = await fetchWithRetry(apiUrl, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(payload)
@@ -94,7 +114,6 @@ export default async function handler(request, response) {
         }
         identifiedSpecies = identifiedSpecies.replace(/^the fish in the image is a /i, '').replace(/\.$/, '');
 
-        // ... (The rest of the regulation checking logic remains the same)
         let speciesRegs = null, isOutOfSeason = false, isCatchAndRelease = false, hasSizeLimit = false, isNotListedInZone = false, additionalDetails = null;
         if (zoneRegs) {
             const regKey = Object.keys(zoneRegs).find(key => identifiedSpecies.toLowerCase().includes(key.toLowerCase()));
@@ -110,7 +129,9 @@ export default async function handler(request, response) {
                 isNotListedInZone = true;
                 const detailsPrompt = `Provide a concise, one-sentence description for the fish named "${identifiedSpecies}". Start the sentence with the fish name, include its scientific name in parentheses if common, and describe its typical habitat or location. Example: "Butterfish, also known as Atlantic butterfish (Peprilus triacanthus), are small, silvery, flat-bodied fish found in the Atlantic Ocean."`;
                 const detailsPayload = { contents: [{ parts: [{ text: detailsPrompt }] }] };
-                const detailsResponse = await fetch(apiUrl, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(detailsPayload) });
+                
+                // --- UPDATED: Use fetchWithRetry for the second call as well ---
+                const detailsResponse = await fetchWithRetry(apiUrl, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(detailsPayload) });
                 if (detailsResponse.ok) {
                     const detailsResult = await detailsResponse.json();
                     additionalDetails = detailsResult?.candidates?.[0]?.content?.parts?.[0]?.text?.trim();
