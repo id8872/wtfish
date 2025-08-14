@@ -23,14 +23,12 @@
             0% { transform: rotate(0deg); }
             100% { transform: rotate(360deg); }
         }
-        /* --- NEW: Accessibility & UX Improvements --- */
         .interactive-element {
             min-height: 44px;
             display: flex;
             align-items: center;
             justify-content: center;
         }
-        /* Add a clear focus indicator for keyboard navigation */
         :focus-visible {
             outline: 3px solid #3b82f6;
             outline-offset: 2px;
@@ -41,7 +39,7 @@
 
     <div class="container mx-auto p-4 md:p-8 max-w-4xl">
         <header class="text-center mb-8">
-            <h1 class="text-4xl font-bold text-blue-600">WTFish!</h1>
+            <img src="https://placehold.co/1200x300/22c55e/ffffff?text=WTFish!%0A(Jumping+Fish+Logo)" alt="WTFish! Logo" class="w-full max-w-xs md:max-w-sm mx-auto h-auto rounded-lg">
             <p class="text-gray-600 mt-2">Identify your fish and check the regulations before logging your catch.</p>
         </header>
 
@@ -85,6 +83,16 @@
                      <p id="fishResult" class="text-2xl font-bold text-gray-800 mb-4"></p>
                      <div id="regsContainer"></div>
                 </div>
+
+                <!-- NEW: Zone Summary Box -->
+                <div id="summaryContainer" class="hidden text-left p-4 bg-gray-50 rounded-lg border border-gray-200">
+                    <div class="flex justify-between items-center mb-2">
+                         <h3 id="summaryTitle" class="text-lg font-semibold text-gray-700">Zone Summary</h3>
+                         <button id="closeSummaryBtn" class="text-xl font-bold text-gray-500 hover:text-gray-800">&times;</button>
+                    </div>
+                     <div id="summaryContent" class="max-h-64 overflow-y-auto"></div>
+                </div>
+                
                  <div id="loader" class="hidden self-center">
                     <div class="loader"></div>
                     <p class="mt-2 text-gray-500">AI is analysing...</p>
@@ -122,19 +130,6 @@
         </main>
     </div>
 
-    <!-- Zone Summary Modal -->
-    <div id="summaryModal" class="modal-overlay hidden">
-        <div class="modal-content">
-            <div class="flex justify-between items-center mb-4">
-                <h2 id="summaryModalTitle" class="text-2xl font-bold">Zone Summary</h2>
-                <button id="closeSummaryModal" class="text-2xl font-bold">&times;</button>
-            </div>
-            <div id="summaryModalContent">
-                <!-- Summary will be injected here -->
-            </div>
-        </div>
-    </div>
-
     <script>
         document.addEventListener('DOMContentLoaded', () => {
             // DOM Elements
@@ -142,10 +137,10 @@
             const findZoneBtn = document.getElementById('findZoneBtn');
             const zoneStatus = document.getElementById('zoneStatus');
             const viewSummaryBtn = document.getElementById('viewSummaryBtn');
-            const summaryModal = document.getElementById('summaryModal');
-            const summaryModalTitle = document.getElementById('summaryModalTitle');
-            const summaryModalContent = document.getElementById('summaryModalContent');
-            const closeSummaryModal = document.getElementById('closeSummaryModal');
+            const summaryContainer = document.getElementById('summaryContainer');
+            const summaryTitle = document.getElementById('summaryTitle');
+            const summaryContent = document.getElementById('summaryContent');
+            const closeSummaryBtn = document.getElementById('closeSummaryBtn');
             const imageUpload = document.getElementById('imageUpload');
             const imagePreviewContainer = document.getElementById('imagePreviewContainer');
             const imagePreview = document.getElementById('imagePreview');
@@ -201,9 +196,9 @@
 
             viewSummaryBtn.addEventListener('click', async () => {
                 const selectedFmz = fmzSelect.value;
-                summaryModalTitle.textContent = `Summary for ${selectedFmz}`;
-                summaryModalContent.innerHTML = '<div class="loader mx-auto"></div>';
-                summaryModal.classList.remove('hidden');
+                summaryTitle.textContent = `Summary for ${selectedFmz}`;
+                summaryContent.innerHTML = '<div class="loader mx-auto"></div>';
+                summaryContainer.classList.remove('hidden');
 
                 try {
                     const response = await fetch('/api/get-zone-summary', {
@@ -220,17 +215,17 @@
                             summaryHtml += `<li class="border-b pb-2"><strong class="text-gray-800">${item.species}:</strong> <span class="${seasonClass}">${item.season}</span></li>`;
                         });
                         summaryHtml += '</ul>';
-                        summaryModalContent.innerHTML = summaryHtml;
+                        summaryContent.innerHTML = summaryHtml;
                     } else {
-                        summaryModalContent.innerHTML = `<p class="text-red-600">${summaryData.error}</p>`;
+                        summaryContent.innerHTML = `<p class="text-red-600">${summaryData.error}</p>`;
                     }
                 } catch (error) {
-                    summaryModalContent.innerHTML = `<p class="text-red-600">Failed to load summary.</p>`;
+                    summaryContent.innerHTML = `<p class="text-red-600">Failed to load summary.</p>`;
                 }
             });
 
-            closeSummaryModal.addEventListener('click', () => {
-                summaryModal.classList.add('hidden');
+            closeSummaryBtn.addEventListener('click', () => {
+                summaryContainer.classList.add('hidden');
             });
 
             const resizeImage = (file, maxWidth, maxHeight, quality) => {
