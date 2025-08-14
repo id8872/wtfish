@@ -278,8 +278,14 @@
                     if (result.species) {
                         fishResult.textContent = result.species;
                         
-                        let regsHtml = '<h4 class="font-semibold text-gray-600">Regulations:</h4>';
-                        if (result.regulations) {
+                        let regsHtml = '';
+                        if (result.isNotListedInZone) {
+                            regsHtml = `<p class="text-amber-700 font-bold text-sm">Warning: This species is not listed in the regulations for ${selectedFmz}.</p>`;
+                            if (result.additionalDetails) {
+                                regsHtml += `<p class="text-amber-700 text-sm mt-1">${result.additionalDetails}</p>`;
+                            }
+                        } else if (result.regulations) {
+                            regsHtml += '<h4 class="font-semibold text-gray-600">Regulations:</h4>';
                             const seasonClass = result.isOutOfSeason ? 'text-red-700 font-bold' : '';
                             const limitClass = result.hasSizeLimit && !result.isOutOfSeason ? 'text-amber-700 font-bold' : '';
                             const cLimitClass = result.isCatchAndRelease && !result.isOutOfSeason && !result.hasSizeLimit ? 'text-amber-700 font-bold' : limitClass;
@@ -297,8 +303,6 @@
                             } else if (result.isCatchAndRelease) {
                                 regsHtml += `<p class="text-amber-700 font-bold text-sm mt-2">Note: This is catch-and-release only for Conservation Licence holders.</p>`;
                             }
-                        } else {
-                            regsHtml += `<p class="text-sm mt-1">No specific regulations found for this species in ${selectedFmz}. Please consult the official summary.</p>`;
                         }
                         regsContainer.innerHTML = regsHtml;
 
