@@ -43,13 +43,13 @@ function isSeasonOpen(seasonString) {
     return false;
 }
 
-// --- NEW: Helper function for API calls with exponential backoff ---
+// --- Helper function for API calls with exponential backoff ---
 async function fetchWithRetry(url, options, retries = 4) {
     let delay = 1000; // Start with a 1-second delay
     for (let i = 0; i < retries; i++) {
         try {
             const response = await fetch(url, options);
-            if (response.status === 503) { // If the model is overloaded, wait and retry
+            if (response.status === 503 || response.status === 429) { // If the model is overloaded or rate limited, wait and retry
                 await new Promise(resolve => setTimeout(resolve, delay));
                 delay *= 2; // Double the delay for the next retry
                 continue; // Go to the next iteration of the loop
@@ -61,7 +61,7 @@ async function fetchWithRetry(url, options, retries = 4) {
             delay *= 2;
         }
     }
-    throw new Error("API is overloaded. Please try again later.");
+    throw new Error("API is overloaded or rate-limited. Please try again later.");
 }
 
 
@@ -90,13 +90,14 @@ export default async function handler(request, response) {
 
         const zoneRegs = regulations[fmz];
         const possibleSpecies = zoneRegs ? Object.keys(zoneRegs).join(', ') : 'common Ontario sport fish';
-        const identifyPrompt = `From the following list of fish found in Ontario (${possibleSpecies}), identify the species of fish in this image. Respond with only the common name of the fish. Do not add any other text.`;
+        
+        // --- UPDATED PROMPT ---
+        // This prompt gives the AI clearer instructions for both cases (in-zone and out-of-zone fish).
+        const identifyPrompt = `Identify the fish in the image. First, check if it matches any of these common Ontario species: ${possibleSpecies}. If it's a match, respond with only its common name. If it's not a match, identify the fish anyway and respond with only its common name. Do not add any explanatory text.`;
         
         const payload = { contents: [{ parts: [{ text: identifyPrompt }, { inlineData: { mimeType: photo.mimetype, data: imageData } }] }] };
         const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash-latest:generateContent?key=${apiKey}`;
-//        const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-pro-latest:generateContent?key=${apiKey}`;
 
-        // --- UPDATED: Use the new fetchWithRetry function ---
         const apiResponse = await fetchWithRetry(apiUrl, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
@@ -131,7 +132,6 @@ export default async function handler(request, response) {
                 const detailsPrompt = `Provide a concise, one-sentence description for the fish named "${identifiedSpecies}". Start the sentence with the fish name, include its scientific name in parentheses if common, and describe its typical habitat or location. Example: "Butterfish, also known as Atlantic butterfish (Peprilus triacanthus), are small, silvery, flat-bodied fish found in the Atlantic Ocean."`;
                 const detailsPayload = { contents: [{ parts: [{ text: detailsPrompt }] }] };
                 
-                // --- UPDATED: Use fetchWithRetry for the second call as well ---
                 const detailsResponse = await fetchWithRetry(apiUrl, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(detailsPayload) });
                 if (detailsResponse.ok) {
                     const detailsResult = await detailsResponse.json();
