@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>WTFish!</title>
-    <link rel="icon" type="image/png" href="assets/favicon.png">
+    <link rel="icon" type="image/png" href="assets/Waterbody.png">
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <style>
@@ -119,7 +119,7 @@
                 </button>
             </div>
 
-            <!-- NEW: Zone Summary Box (moved here and restyled) -->
+            <!-- Zone Summary Box -->
             <div id="summaryContainer" class="hidden md:col-span-2 bg-white p-6 rounded-lg shadow-md">
                 <div class="flex justify-between items-center mb-2">
                      <h3 id="summaryTitle" class="text-lg font-semibold text-gray-700">Zone Summary</h3>
@@ -199,6 +199,9 @@
                 summaryTitle.textContent = `Summary for ${selectedFmz}`;
                 summaryContent.innerHTML = '<div class="loader mx-auto"></div>';
                 summaryContainer.classList.remove('hidden');
+                
+                // --- NEW: Scroll to the summary box ---
+                summaryContainer.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
 
                 try {
                     const response = await fetch('/api/get-zone-summary', {
