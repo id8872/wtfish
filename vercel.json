@@ -1,0 +1,15 @@
+{
+  "rewrites": [
+    {
+      "source": "/((?!oos.html|assets/.*).*)",
+      "has": [
+        {
+          "type": "env",
+          "key": "MAINTENANCE_MODE",
+          "value": "true"
+        }
+      ],
+      "destination": "/oos.html"
+    }
+  ]
+}
