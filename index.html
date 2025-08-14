@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>WTFish!</title>
-    <link rel="icon" type="image/png" href="assets/Waterbody.png">
+    <link rel="icon" type="image/png" href="assets/favicon.png">
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <style>
@@ -128,6 +128,13 @@
                  <div id="summaryContent" class="max-h-64 overflow-y-auto"></div>
             </div>
         </main>
+
+        <!-- NEW: Disclaimer Footer -->
+        <footer class="text-center mt-12">
+            <p class="text-xs text-gray-500">
+                <strong>Disclaimer:</strong> WTFish! is a helpful tool, but is not a legal document. AI identification can sometimes be incorrect. Always consult the official <a href="https://www.ontario.ca/document/ontario-fishing-regulations-summary" target="_blank" class="text-blue-600 hover:underline">Ontario Fishing Regulations Summary</a> to ensure compliance.
+            </p>
+        </footer>
     </div>
 
     <script>
@@ -200,7 +207,6 @@
                 summaryContent.innerHTML = '<div class="loader mx-auto"></div>';
                 summaryContainer.classList.remove('hidden');
                 
-                // --- NEW: Scroll to the summary box ---
                 summaryContainer.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
 
                 try {
