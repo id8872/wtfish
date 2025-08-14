@@ -163,7 +163,7 @@
                             fmzSelect.value = data.zone;
                             zoneStatus.textContent = `Zone found: ${data.zone}`;
                         } else {
-                            zoneStatus.textContent = data.message || 'Could not find zone.';
+                            zoneStatus.textContent = 'Zone not found. Note: App is for Ontario regulations only.';
                         }
                     } catch (error) {
                         zoneStatus.textContent = 'Error finding zone.';
