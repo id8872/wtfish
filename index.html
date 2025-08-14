@@ -282,7 +282,8 @@
                         if (result.isNotListedInZone) {
                             regsHtml = `<p class="text-amber-700 font-bold text-sm">Warning: This species is not listed in the regulations for ${selectedFmz}.</p>`;
                             if (result.additionalDetails) {
-                                regsHtml += `<p class="text-amber-700 text-sm mt-1">${result.additionalDetails}</p>`;
+                                const details = result.additionalDetails.replace(result.species, `<strong>${result.species}</strong>`);
+                                regsHtml += `<p class="text-gray-600 text-sm mt-2">${details}</p>`;
                             }
                         } else if (result.regulations) {
                             regsHtml += '<h4 class="font-semibold text-gray-600">Regulations:</h4>';
