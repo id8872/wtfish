@@ -1,34 +1,34 @@
 // File: api/identify.js
-// This is the main serverless function. It identifies the fish and checks the season regulations.
+// This is the main serverless function. It identifies the fish and checks all regulations.
 
 import { regulations } from './regulations.js';
 
 // --- Helper function to check if the current date is within the fishing season ---
 function isSeasonOpen(seasonString) {
-    if (!seasonString || seasonString.toLowerCase() === 'open all year') {
+    if (!seasonString || seasonString.toLowerCase().includes('open all year')) {
         return true;
     }
-    if (seasonString.toLowerCase() === 'closed all year') {
+    if (seasonString.toLowerCase().includes('closed all year')) {
         return false;
     }
 
-    // Get the current date in a simple format, without the year.
-    // We add 1 to getMonth() because it's zero-based (0=Jan, 1=Feb, etc.)
     const now = new Date();
     const today = { month: now.getMonth() + 1, day: now.getDate() };
 
-    // This function converts a "Month Day" string into a comparable object.
     const parseDate = (dateStr) => {
-        const parts = dateStr.trim().split(' ');
+        const parts = dateStr.trim().replace(/,.*/, '').split(' ');
         const monthNames = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+        let monthIndex = monthNames.findIndex(m => parts[0].startsWith(m));
+        if (monthIndex === -1) return null; // Handle cases where month is not found
         return {
-            month: monthNames.indexOf(parts[0]) + 1,
+            month: monthIndex + 1,
             day: parseInt(parts[1], 10)
         };
     };
     
-    // The regulations have two main formats: "Jan 1 to Sep 30" or "Jan 1 to Mar 15 & second Sat in May to Dec 31"
-    const seasons = seasonString.split('&');
+    // This logic is simplified and may not catch all complex date rules like "third Saturday in May".
+    const simplifiedSeason = seasonString.replace(/(\w+\s\w+\s\w+\s\w+)/g, '');
+    const seasons = simplifiedSeason.split('&');
 
     for (const season of seasons) {
         const dates = season.split('to');
@@ -37,23 +37,22 @@ function isSeasonOpen(seasonString) {
         const start = parseDate(dates[0]);
         const end = parseDate(dates[1]);
 
-        // Case 1: Season does not cross the new year (e.g., Apr 1 to Sep 30)
+        if (!start || !end) continue;
+
         if (start.month <= end.month) {
             if ((today.month > start.month || (today.month === start.month && today.day >= start.day)) &&
                 (today.month < end.month || (today.month === end.month && today.day <= end.day))) {
-                return true; // We are within a valid season part
+                return true;
             }
-        } 
-        // Case 2: Season crosses the new year (e.g., Oct 1 to Mar 15)
-        else {
+        } else { // Season crosses the new year
             if ((today.month > start.month || (today.month === start.month && today.day >= start.day)) ||
                 (today.month < end.month || (today.month === end.month && today.day <= end.day))) {
-                return true; // We are within a valid season part
+                return true;
             }
         }
     }
 
-    return false; // If we loop through all parts and none match, the season is closed.
+    return false;
 }
 
 
@@ -105,20 +104,36 @@ export default async function handler(request, response) {
     const zoneRegs = regulations[fmz];
     let speciesRegs = null;
     let isOutOfSeason = false;
+    let isCatchAndRelease = false;
+    let hasSizeLimit = false;
 
     if (zoneRegs) {
         const regKey = Object.keys(zoneRegs).find(key => identifiedSpecies.toLowerCase().includes(key.toLowerCase()));
         if (regKey) {
             speciesRegs = zoneRegs[regKey];
-            // Check if the season is open for this fish
             isOutOfSeason = !isSeasonOpen(speciesRegs.season);
+            
+            const sportLimitText = speciesRegs.limits.Sport.toLowerCase();
+            const conservationLimitText = speciesRegs.limits.Conservation.toLowerCase();
+
+            if (conservationLimitText === 'c-0') {
+                isCatchAndRelease = true;
+            }
+            
+            // Check for keywords indicating a size limit
+            const sizeKeywords = ['cm', '>', '<', 'between'];
+            if (sizeKeywords.some(key => sportLimitText.includes(key) || conservationLimitText.includes(key))) {
+                hasSizeLimit = true;
+            }
         }
     }
     
     response.status(200).json({
         species: identifiedSpecies,
         regulations: speciesRegs,
-        isOutOfSeason: isOutOfSeason // Send the new flag to the frontend
+        isOutOfSeason: isOutOfSeason,
+        isCatchAndRelease: isCatchAndRelease,
+        hasSizeLimit: hasSizeLimit // Send the new flag
     });
 
   } catch (error) {
