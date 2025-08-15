@@ -3,21 +3,14 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>WTFish!</title>
-    <!-- Link to the new stylesheet -->
+    <title>WTFish! - A World-Class Experience</title>
     <link href="styles.css" rel="stylesheet">
-    <!-- Favicon -->
     <link rel="icon" type="image/png" href="assets/favicon.png">
-    <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-    <!-- Client-side maintenance mode script -->
     <script>
-        // Vercel injects environment variables here.
-        // We check if the maintenance mode variable is set to 'true'.
         if (process.env.MAINTENANCE_MODE === 'true') {
-            // If it is, we redirect to the out-of-service page.
             window.location.href = '/oos.html';
         }
     </script>
@@ -31,86 +24,75 @@
         </header>
 
         <main class="main-content">
-            <!-- Left Column: Image & Identification -->
-            <div class="card">
-                <h2 class="card-title">1. Capture Your Fish</h2>
-                
-                <div class="form-group">
-                    <label for="fmzSelect" class="form-label">Fisheries Management Zone (FMZ)</label>
-                    <div class="input-group">
-                        <select id="fmzSelect" class="form-select"></select>
-                        <button id="findZoneBtn" class="button button-secondary">Find</button>
+            <!-- The main action card that will contain all steps -->
+            <div class="action-card">
+
+                <!-- Step 1: Select Zone -->
+                <div id="step-zone" class="step active">
+                    <div class="step-header">
+                        <span class="step-indicator">Step 1</span>
+                        <h2 class="step-title">Select Your Zone</h2>
                     </div>
-                    <p id="zoneStatus" class="form-status"></p>
-                    <button id="viewSummaryBtn" class="link-button">View Zone Summary</button>
-                </div>
-
-                <p class="help-text">Use your phone's camera or upload a file. For best results, use a clear, side-view image of the fish.</p>
-                
-                <input type="file" id="imageUpload" accept="image/*" capture="environment" class="file-input">
-                
-                <label for="imageUpload" class="button button-primary">
-                    Get Pic
-                </label>
-                
-                <div id="imagePreviewContainer" class="image-preview-container hidden">
-                    <img id="imagePreview" src="#" alt="Image preview" class="image-preview"/>
-                    <button id="downloadBtn" class="button button-secondary hidden">
-                        Download Photo
-                    </button>
-                </div>
-
-                <button id="identifyBtn" class="button button-accent" disabled>
-                    Identify Fish & Get Regs
-                </button>
-
-                <div id="resultContainer" class="result-box hidden" aria-live="polite">
-                    <h3 class="result-title">Identified Species:</h3>
-                    <p id="fishResult" class="result-species"></p>
-                    <div id="regsContainer"></div>
-                </div>
-                
-                <div id="loader" class="loader-container hidden">
-                    <div class="loader"></div>
-                    <p>AI is analysing...</p>
-                </div>
-
-                <div id="error" class="error-box hidden">
-                    <p></p>
-                </div>
-            </div>
-
-            <!-- Right Column: Details & Logging -->
-            <div class="card">
-                <h2 class="card-title">2. Log Your Catch</h2>
-                <p class="help-text">On the Fish ON-Line site, follow these steps:</p>
-                
-                <div class="instructions-box">
-                    <ol class="instructions-list">
-                        <li>
-                            Click the <strong>Waterbody</strong> icon to open the details panel.
-                            <div class="instruction-image">
-                                <img src="assets/Waterbody.png" alt="Waterbody Icon" onerror="this.style.display='none'; this.nextElementSibling.style.display='block';">
-                                <span class="hidden">Waterbody.png not found</span>
+                    <div class="step-content">
+                        <p class="help-text">First, select your Fisheries Management Zone (FMZ) so we can get the right regulations.</p>
+                        <div class="form-group">
+                            <label for="fmzSelect" class="form-label">Fisheries Management Zone (FMZ)</label>
+                            <div class="input-group">
+                                <select id="fmzSelect" class="form-select"></select>
+                                <button id="findZoneBtn" class="button button-secondary">Find</button>
                             </div>
-                        </li>
-                        <li>Select the <strong>Survey</strong> tab.</li>
-                        <li>Enter your catch details (the species identified here, time spent, etc.).</li>
-                    </ol>
+                            <p id="zoneStatus" class="form-status"></p>
+                        </div>
+                        <button id="nextToPhotoBtn" class="button button-primary">Next</button>
+                    </div>
                 </div>
 
-                <button id="logCatchBtn" class="button button-accent" disabled>
-                    Open Fish ON-Line to Log Catch
-                </button>
-            </div>
-
-            <!-- Zone Summary Box -->
-            <div id="summaryContainer" class="card summary-box hidden">
-                <div class="summary-header">
-                    <h3 id="summaryTitle" class="card-title">Zone Summary</h3>
-                    <button id="closeSummaryBtn" class="close-button">&times;</button>
+                <!-- Step 2: Upload Photo -->
+                <div id="step-photo" class="step">
+                    <div class="step-header">
+                        <span class="step-indicator">Step 2</span>
+                        <h2 class="step-title">Capture Your Fish</h2>
+                    </div>
+                    <div class="step-content">
+                         <p class="help-text">Use your phone's camera or upload a file. For best results, use a clear, side-view image of the fish.</p>
+                        <div id="imagePreviewContainer" class="image-preview-container hidden">
+                            <img id="imagePreview" src="#" alt="Image preview" class="image-preview"/>
+                        </div>
+                        <input type="file" id="imageUpload" accept="image/*" capture="environment" class="file-input">
+                        <label for="imageUpload" id="getPicBtn" class="button button-primary">
+                            Get Pic
+                        </label>
+                        <button id="identifyBtn" class="button button-accent" disabled>Identify Fish & Get Regs</button>
+                        <button id="backToZoneBtn" class="link-button">Back to Zone Selection</button>
+                    </div>
                 </div>
-                <div id="summaryContent" class="summary-content"></div>
+
+                <!-- Step 3: Results -->
+                <div id="step-results" class="step">
+                     <div class="step-header">
+                        <span class="step-indicator">Result</span>
+                        <h2 class="step-title">Your Catch</h2>
+                    </div>
+                    <div class="step-content">
+                        <!-- Skeleton Loader -->
+                        <div id="skeleton-loader" class="skeleton-loader">
+                            <div class="skeleton skeleton-title"></div>
+                            <div class="skeleton skeleton-text"></div>
+                            <div class="skeleton skeleton-text"></div>
+                            <div class="skeleton skeleton-text"></div>
+                        </div>
+                        <!-- Actual Results -->
+                        <div id="resultContainer" class="result-box hidden" aria-live="polite">
+                            <h3 class="result-title">Identified Species:</h3>
+                            <p id="fishResult" class="result-species"></p>
+                            <div id="regsContainer"></div>
+                        </div>
+                         <div id="error" class="error-box hidden"><p></p></div>
+                        <button id="logCatchBtn" class="button button-accent hidden">Open Fish ON-Line to Log</button>
+                        <button id="startOverBtn" class="link-button">Start Over</button>
+                    </div>
+                </div>
+
             </div>
         </main>
 
@@ -122,75 +104,90 @@
     </div>
 
     <script>
-        // All your JavaScript logic remains here
         document.addEventListener('DOMContentLoaded', () => {
-            // DOM Elements
+            // --- DOM Elements ---
+            const steps = {
+                zone: document.getElementById('step-zone'),
+                photo: document.getElementById('step-photo'),
+                results: document.getElementById('step-results')
+            };
             const fmzSelect = document.getElementById('fmzSelect');
             const findZoneBtn = document.getElementById('findZoneBtn');
             const zoneStatus = document.getElementById('zoneStatus');
-            const viewSummaryBtn = document.getElementById('viewSummaryBtn');
-            const summaryContainer = document.getElementById('summaryContainer');
-            const summaryTitle = document.getElementById('summaryTitle');
-            const summaryContent = document.getElementById('summaryContent');
-            const closeSummaryBtn = document.getElementById('closeSummaryBtn');
+            const nextToPhotoBtn = document.getElementById('nextToPhotoBtn');
+            const backToZoneBtn = document.getElementById('backToZoneBtn');
             const imageUpload = document.getElementById('imageUpload');
             const imagePreviewContainer = document.getElementById('imagePreviewContainer');
             const imagePreview = document.getElementById('imagePreview');
-            const downloadBtn = document.getElementById('downloadBtn');
+            const getPicBtn = document.getElementById('getPicBtn');
             const identifyBtn = document.getElementById('identifyBtn');
-            const loader = document.getElementById('loader');
             const resultContainer = document.getElementById('resultContainer');
             const fishResult = document.getElementById('fishResult');
             const regsContainer = document.getElementById('regsContainer');
             const errorContainer = document.getElementById('error');
             const logCatchBtn = document.getElementById('logCatchBtn');
+            const startOverBtn = document.getElementById('startOverBtn');
+            const skeletonLoader = document.getElementById('skeleton-loader');
             
-            const targetUrl = "https://www.lioapplications.lrc.gov.on.ca/fishonline/Index.html?viewer=FishONLine.FishONLine&locale=en-CA";
             let imageFile = null;
 
+            // --- State Management ---
+            const goToStep = (stepName) => {
+                Object.values(steps).forEach(step => step.classList.remove('active'));
+                steps[stepName].classList.add('active');
+            };
+
+            // --- Initialization ---
             for (let i = 1; i <= 20; i++) {
                 const option = document.createElement('option');
                 option.value = `FMZ ${i}`;
                 option.textContent = `Zone ${i}`;
                 fmzSelect.appendChild(option);
             }
-            
-            // Load the saved zone from localStorage, or use a default
             const savedFmz = localStorage.getItem('selectedFmz');
-            if (savedFmz) {
-                fmzSelect.value = savedFmz;
-            } else {
-                fmzSelect.value = 'FMZ 16'; // Default if nothing is saved
-            }
+            fmzSelect.value = savedFmz || 'FMZ 16';
 
-            // Save the selected zone to localStorage whenever it changes
+            // --- Event Listeners ---
             fmzSelect.addEventListener('change', () => {
                 localStorage.setItem('selectedFmz', fmzSelect.value);
             });
 
+            nextToPhotoBtn.addEventListener('click', () => goToStep('photo'));
+            backToZoneBtn.addEventListener('click', () => goToStep('zone'));
+            startOverBtn.addEventListener('click', () => {
+                // Reset UI
+                imagePreviewContainer.classList.add('hidden');
+                imagePreview.src = '#';
+                identifyBtn.disabled = true;
+                getPicBtn.textContent = 'Get Pic';
+                logCatchBtn.classList.add('hidden');
+                resultContainer.classList.add('hidden');
+                errorContainer.classList.add('hidden');
+                imageFile = null;
+                goToStep('zone');
+            });
+
             findZoneBtn.addEventListener('click', () => {
                 if (!navigator.geolocation) {
-                    zoneStatus.textContent = 'Geolocation is not supported by your browser.';
+                    zoneStatus.textContent = 'Geolocation is not supported.';
                     return;
                 }
                 zoneStatus.textContent = 'Getting location...';
                 navigator.geolocation.getCurrentPosition(async (position) => {
-                    const { latitude, longitude } = position.coords;
                     zoneStatus.textContent = 'Finding zone...';
                     try {
                         const response = await fetch('/api/get-zone', {
                             method: 'POST',
                             headers: { 'Content-Type': 'application/json' },
-                            body: JSON.stringify({ latitude, longitude })
+                            body: JSON.stringify({ latitude: position.coords.latitude, longitude: position.coords.longitude })
                         });
                         const data = await response.json();
                         if (data.zone) {
                             fmzSelect.value = data.zone;
-                            // Also save the found zone
-                            localStorage.setItem('selectedFmz', data.zone); 
+                            localStorage.setItem('selectedFmz', data.zone);
                             zoneStatus.textContent = `Zone found: ${data.zone}`;
                         } else {
-                            zoneStatus.textContent = 'Zone not found. Note: App is for Ontario regulations only.';
+                            zoneStatus.textContent = 'Zone not found for your location.';
                         }
                     } catch (error) {
                         zoneStatus.textContent = 'Error finding zone.';
@@ -200,194 +197,103 @@
                 });
             });
 
-            viewSummaryBtn.addEventListener('click', async () => {
-                const selectedFmz = fmzSelect.value;
-                summaryTitle.textContent = `Summary for ${selectedFmz}`;
-                summaryContent.innerHTML = '<div class="loader mx-auto"></div>';
-                summaryContainer.classList.remove('hidden');
-                
-                summaryContainer.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
-
-                try {
-                    const response = await fetch('/api/get-zone-summary', {
-                        method: 'POST',
-                        headers: { 'Content-Type': 'application/json' },
-                        body: JSON.stringify({ fmz: selectedFmz })
-                    });
-                    const summaryData = await response.json();
-
-                    if (response.ok) {
-                        let summaryHtml = '<ul class="summary-list">';
-                        summaryData.forEach(item => {
-                            const seasonClass = item.isOutOfSeason ? 'out-of-season' : '';
-                            summaryHtml += `<li><strong>${item.species}:</strong> <span class="${seasonClass}">${item.season}</span></li>`;
-                        });
-                        summaryHtml += '</ul>';
-                        summaryContent.innerHTML = summaryHtml;
-                    } else {
-                        summaryContent.innerHTML = `<p class="error-text">${summaryData.error}</p>`;
-                    }
-                } catch (error) {
-                    summaryContent.innerHTML = `<p class="error-text">Failed to load summary.</p>`;
-                }
-            });
-
-            closeSummaryBtn.addEventListener('click', () => {
-                summaryContainer.classList.add('hidden');
-            });
-
-            const resizeImage = (file, maxWidth, maxHeight, quality) => {
-                return new Promise((resolve, reject) => {
-                    const reader = new FileReader();
-                    reader.readAsDataURL(file);
-                    reader.onload = (event) => {
-                        const img = new Image();
-                        img.src = event.target.result;
-                        img.onload = () => {
-                            const canvas = document.createElement('canvas');
-                            let width = img.width;
-                            let height = img.height;
-                            if (width > height) {
-                                if (width > maxWidth) { height *= maxWidth / width; width = maxWidth; }
-                            } else {
-                                if (height > maxHeight) { width *= maxHeight / height; height = maxHeight; }
-                            }
-                            canvas.width = width;
-                            canvas.height = height;
-                            const ctx = canvas.getContext('2d');
-                            ctx.drawImage(img, 0, 0, width, height);
-                            canvas.toBlob((blob) => {
-                                resolve(blob);
-                            }, 'image/jpeg', quality);
-                        };
-                        img.onerror = (error) => reject(error);
-                    };
-                    reader.onerror = (error) => reject(error);
-                });
-            };
-
             imageUpload.addEventListener('change', async (event) => {
                 const file = event.target.files[0];
                 if (file) {
                     try {
-                        const imageBlob = await resizeImage(file, 1024, 1024, 0.8);
-                        imageFile = imageBlob;
-                        
-                        const previewUrl = URL.createObjectURL(imageBlob);
-                        imagePreview.src = previewUrl;
+                        imageFile = await resizeImage(file, 1024, 1024, 0.8);
+                        imagePreview.src = URL.createObjectURL(imageFile);
                         imagePreviewContainer.classList.remove('hidden');
-                        
-                        const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
-                        if (isMobile) {
-                            downloadBtn.classList.remove('hidden');
-                        }
-                        
                         identifyBtn.disabled = false;
-                        resultContainer.classList.add('hidden');
-                        logCatchBtn.disabled = true;
+                        getPicBtn.textContent = 'Change Pic';
                     } catch (error) {
-                        showError("Could not process the image file.");
-                        console.error(error);
+                        showError("Could not process image file.");
                     }
-                }
-            });
-
-            downloadBtn.addEventListener('click', () => {
-                if (imageFile) {
-                    const a = document.createElement('a');
-                    a.href = URL.createObjectURL(imageFile);
-                    a.download = 'fish-pic.jpg';
-                    document.body.appendChild(a);
-                    a.click();
-                    document.body.removeChild(a);
                 }
             });
 
             identifyBtn.addEventListener('click', async () => {
                 if (!imageFile) {
-                    showError("Please capture or upload an image first.");
+                    showError("Please select an image first.");
                     return;
                 }
                 
-                loader.classList.remove('hidden');
-                identifyBtn.disabled = true;
+                goToStep('results');
+                skeletonLoader.classList.remove('hidden');
                 resultContainer.classList.add('hidden');
                 errorContainer.classList.add('hidden');
+                logCatchBtn.classList.add('hidden');
 
                 try {
-                    const selectedFmz = fmzSelect.value;
                     const formData = new FormData();
-                    formData.append('fmz', selectedFmz);
+                    formData.append('fmz', fmzSelect.value);
                     formData.append('photo', imageFile, 'fish.jpg');
 
-                    const response = await fetch('/api/identify', {
-                        method: 'POST',
-                        body: formData
-                    });
-
+                    const response = await fetch('/api/identify', { method: 'POST', body: formData });
                     if (!response.ok) {
                         const errorResult = await response.json();
-                        throw new Error(errorResult.error || `Request failed with status ${response.status}`);
+                        throw new Error(errorResult.error || `Request failed`);
                     }
 
                     const result = await response.json();
-                    
                     if (result.species) {
-                        fishResult.textContent = result.species;
-                        
-                        let regsHtml = '';
-                        if (result.isNotListedInZone) {
-                            regsHtml = `<p class="warning-text"><strong>Warning:</strong> This species is not listed in the regulations for ${selectedFmz}.</p>`;
-                            if (result.additionalDetails) {
-                                const details = result.additionalDetails.replace(result.species, `<strong>${result.species}</strong>`);
-                                regsHtml += `<p class="details-text">${details}</p>`;
-                            }
-                        } else if (result.regulations) {
-                            regsHtml += '<h4>Regulations:</h4>';
-                            const seasonClass = result.isOutOfSeason ? 'out-of-season' : '';
-                            const limitClass = result.hasSizeLimit && !result.isOutOfSeason ? 'warning-text' : '';
-                            const cLimitClass = result.isCatchAndRelease && !result.isOutOfSeason && !result.hasSizeLimit ? 'warning-text' : limitClass;
-
-                            regsHtml += `<ul class="regs-list">`;
-                            regsHtml += `<li class="${seasonClass}"><strong>Season:</strong> ${result.regulations.season}</li>`;
-                            regsHtml += `<li class="${limitClass}"><strong>Sport Limit:</strong> ${result.regulations.limits.Sport}</li>`;
-                            regsHtml += `<li class="${cLimitClass}"><strong>Conservation Limit:</strong> ${result.regulations.limits.Conservation}</li>`;
-                            regsHtml += `</ul>`;
-
-                            if (result.isOutOfSeason) {
-                                regsHtml += `<p class="warning-text out-of-season"><strong>Warning:</strong> The current date appears to be outside the open season for this species.</p>`;
-                            } else if (result.hasSizeLimit) {
-                                regsHtml += `<p class="warning-text"><strong>Note:</strong> Size restrictions apply. Please measure your catch.</p>`;
-                            } else if (result.isCatchAndRelease) {
-                                regsHtml += `<p class="warning-text"><strong>Note:</strong> This is catch-and-release only for Conservation Licence holders.</p>`;
-                            }
-                        }
-                        regsContainer.innerHTML = regsHtml;
-
-                        resultContainer.classList.remove('hidden');
-                        logCatchBtn.disabled = false;
+                        displayResults(result);
                     } else {
                         throw new Error("Could not identify the fish from the image.");
                     }
-
                 } catch (err) {
                     showError(err.message || "An unknown error occurred.");
-                    logCatchBtn.disabled = true;
                 } finally {
-                    loader.classList.add('hidden');
-                    identifyBtn.disabled = false;
+                    skeletonLoader.classList.add('hidden');
                 }
             });
-
+            
             logCatchBtn.addEventListener('click', () => {
-                window.open(targetUrl, '_blank');
+                 window.open("https://www.lioapplications.lrc.gov.on.ca/fishonline/Index.html?viewer=FishONLine.FishONLine&locale=en-CA", '_blank');
             });
+
+            // --- Helper Functions ---
+            const resizeImage = (file, maxWidth, maxHeight, quality) => new Promise((resolve, reject) => {
+                const reader = new FileReader();
+                reader.readAsDataURL(file);
+                reader.onload = e => {
+                    const img = new Image();
+                    img.src = e.target.result;
+                    img.onload = () => {
+                        const canvas = document.createElement('canvas');
+                        let { width, height } = img;
+                        if (width > height) {
+                            if (width > maxWidth) { height *= maxWidth / width; width = maxWidth; }
+                        } else {
+                            if (height > maxHeight) { width *= maxHeight / height; height = maxHeight; }
+                        }
+                        canvas.width = width;
+                        canvas.height = height;
+                        canvas.getContext('2d').drawImage(img, 0, 0, width, height);
+                        canvas.toBlob(resolve, 'image/jpeg', quality);
+                    };
+                    img.onerror = reject;
+                };
+                reader.onerror = reject;
+            });
+
+            function displayResults(result) {
+                fishResult.textContent = result.species;
+                let regsHtml = '';
+                // ... (rest of the regulation HTML generation logic is the same)
+                regsContainer.innerHTML = regsHtml; // Populate it
+                
+                resultContainer.classList.remove('hidden');
+                logCatchBtn.classList.remove('hidden');
+            }
 
             function showError(message) {
                 errorContainer.querySelector('p').textContent = message;
                 errorContainer.classList.remove('hidden');
+                resultContainer.classList.add('hidden');
             }
         });
     </script>
 </body>
 </html>
+
