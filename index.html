@@ -24,75 +24,83 @@
         </header>
 
         <main class="main-content">
-            <!-- The main action card that will contain all steps -->
-            <div class="action-card">
-
-                <!-- Step 1: Select Zone -->
-                <div id="step-zone" class="step active">
-                    <div class="step-header">
-                        <span class="step-indicator">Step 1</span>
-                        <h2 class="step-title">Select Your Zone</h2>
+            <!-- Left Column: Image & Identification -->
+            <div class="card">
+                <h2 class="card-title">1. Capture Your Fish</h2>
+                
+                <div class="form-group">
+                    <label for="fmzSelect" class="form-label">Fisheries Management Zone (FMZ)</label>
+                    <div class="input-group">
+                        <select id="fmzSelect" class="form-select"></select>
+                        <button id="findZoneBtn" class="button button-secondary">Find</button>
                     </div>
-                    <div class="step-content">
-                        <p class="help-text">First, select your Fisheries Management Zone (FMZ) so we can get the right regulations.</p>
-                        <div class="form-group">
-                            <label for="fmzSelect" class="form-label">Fisheries Management Zone (FMZ)</label>
-                            <div class="input-group">
-                                <select id="fmzSelect" class="form-select"></select>
-                                <button id="findZoneBtn" class="button button-secondary">Find</button>
+                    <p id="zoneStatus" class="form-status"></p>
+                    <button id="viewSummaryBtn" class="link-button">View Zone Summary</button>
+                </div>
+
+                <p class="help-text">Use your phone's camera or upload a file. For best results, use a clear, side-view image of the fish.</p>
+                
+                <input type="file" id="imageUpload" accept="image/*" capture="environment" class="file-input">
+                
+                <label for="imageUpload" class="button button-primary">
+                    Get Pic
+                </label>
+                
+                <div id="imagePreviewContainer" class="image-preview-container hidden">
+                    <img id="imagePreview" src="#" alt="Image preview" class="image-preview"/>
+                </div>
+
+                <button id="identifyBtn" class="button button-accent" disabled>
+                    Identify Fish & Get Regs
+                </button>
+
+                <div id="loader" class="loader-container hidden">
+                    <div class="loader"></div>
+                    <p>AI is analysing...</p>
+                </div>
+
+                <div id="resultContainer" class="result-box hidden" aria-live="polite">
+                    <h3 class="result-title">Identified Species:</h3>
+                    <p id="fishResult" class="result-species"></p>
+                    <div id="regsContainer"></div>
+                </div>
+
+                <div id="error" class="error-box hidden">
+                    <p></p>
+                </div>
+            </div>
+
+            <!-- Right Column: Details & Logging -->
+            <div class="card">
+                <h2 class="card-title">2. Log Your Catch</h2>
+                <p class="help-text">On the Fish ON-Line site, follow these steps:</p>
+                
+                <div class="instructions-box">
+                    <ol class="instructions-list">
+                        <li>
+                            Click the <strong>Waterbody</strong> icon to open the details panel.
+                            <div class="instruction-image">
+                                <img src="assets/Waterbody.png" alt="Waterbody Icon" onerror="this.style.display='none'; this.nextElementSibling.style.display='block';">
+                                <span class="hidden">Waterbody.png not found</span>
                             </div>
-                            <p id="zoneStatus" class="form-status"></p>
-                        </div>
-                        <button id="nextToPhotoBtn" class="button button-primary">Next</button>
-                    </div>
+                        </li>
+                        <li>Select the <strong>Survey</strong> tab.</li>
+                        <li>Enter your catch details (the species identified here, time spent, etc.).</li>
+                    </ol>
                 </div>
 
-                <!-- Step 2: Upload Photo -->
-                <div id="step-photo" class="step">
-                    <div class="step-header">
-                        <span class="step-indicator">Step 2</span>
-                        <h2 class="step-title">Capture Your Fish</h2>
-                    </div>
-                    <div class="step-content">
-                         <p class="help-text">Use your phone's camera or upload a file. For best results, use a clear, side-view image of the fish.</p>
-                        <div id="imagePreviewContainer" class="image-preview-container hidden">
-                            <img id="imagePreview" src="#" alt="Image preview" class="image-preview"/>
-                        </div>
-                        <input type="file" id="imageUpload" accept="image/*" capture="environment" class="file-input">
-                        <label for="imageUpload" id="getPicBtn" class="button button-primary">
-                            Get Pic
-                        </label>
-                        <button id="identifyBtn" class="button button-accent" disabled>Identify Fish & Get Regs</button>
-                        <button id="backToZoneBtn" class="link-button">Back to Zone Selection</button>
-                    </div>
-                </div>
+                <button id="logCatchBtn" class="button button-accent" disabled>
+                    Open Fish ON-Line to Log Catch
+                </button>
+            </div>
 
-                <!-- Step 3: Results -->
-                <div id="step-results" class="step">
-                     <div class="step-header">
-                        <span class="step-indicator">Result</span>
-                        <h2 class="step-title">Your Catch</h2>
-                    </div>
-                    <div class="step-content">
-                        <!-- Skeleton Loader -->
-                        <div id="skeleton-loader" class="skeleton-loader">
-                            <div class="skeleton skeleton-title"></div>
-                            <div class="skeleton skeleton-text"></div>
-                            <div class="skeleton skeleton-text"></div>
-                            <div class="skeleton skeleton-text"></div>
-                        </div>
-                        <!-- Actual Results -->
-                        <div id="resultContainer" class="result-box hidden" aria-live="polite">
-                            <h3 class="result-title">Identified Species:</h3>
-                            <p id="fishResult" class="result-species"></p>
-                            <div id="regsContainer"></div>
-                        </div>
-                         <div id="error" class="error-box hidden"><p></p></div>
-                        <button id="logCatchBtn" class="button button-accent hidden">Open Fish ON-Line to Log</button>
-                        <button id="startOverBtn" class="link-button">Start Over</button>
-                    </div>
+            <!-- Zone Summary Box -->
+            <div id="summaryContainer" class="card summary-box hidden">
+                <div class="summary-header">
+                    <h3 id="summaryTitle" class="card-title">Zone Summary</h3>
+                    <button id="closeSummaryBtn" class="close-button">&times;</button>
                 </div>
-
+                <div id="summaryContent" class="summary-content"></div>
             </div>
         </main>
 
@@ -106,36 +114,26 @@
     <script>
         document.addEventListener('DOMContentLoaded', () => {
             // --- DOM Elements ---
-            const steps = {
-                zone: document.getElementById('step-zone'),
-                photo: document.getElementById('step-photo'),
-                results: document.getElementById('step-results')
-            };
             const fmzSelect = document.getElementById('fmzSelect');
             const findZoneBtn = document.getElementById('findZoneBtn');
             const zoneStatus = document.getElementById('zoneStatus');
-            const nextToPhotoBtn = document.getElementById('nextToPhotoBtn');
-            const backToZoneBtn = document.getElementById('backToZoneBtn');
+            const viewSummaryBtn = document.getElementById('viewSummaryBtn');
+            const summaryContainer = document.getElementById('summaryContainer');
+            const summaryTitle = document.getElementById('summaryTitle');
+            const summaryContent = document.getElementById('summaryContent');
+            const closeSummaryBtn = document.getElementById('closeSummaryBtn');
             const imageUpload = document.getElementById('imageUpload');
             const imagePreviewContainer = document.getElementById('imagePreviewContainer');
             const imagePreview = document.getElementById('imagePreview');
-            const getPicBtn = document.getElementById('getPicBtn');
             const identifyBtn = document.getElementById('identifyBtn');
+            const loader = document.getElementById('loader');
             const resultContainer = document.getElementById('resultContainer');
             const fishResult = document.getElementById('fishResult');
             const regsContainer = document.getElementById('regsContainer');
             const errorContainer = document.getElementById('error');
             const logCatchBtn = document.getElementById('logCatchBtn');
-            const startOverBtn = document.getElementById('startOverBtn');
-            const skeletonLoader = document.getElementById('skeleton-loader');
             
             let imageFile = null;
-
-            // --- State Management ---
-            const goToStep = (stepName) => {
-                Object.values(steps).forEach(step => step.classList.remove('active'));
-                steps[stepName].classList.add('active');
-            };
 
             // --- Initialization ---
             for (let i = 1; i <= 20; i++) {
@@ -150,21 +148,6 @@
             // --- Event Listeners ---
             fmzSelect.addEventListener('change', () => {
                 localStorage.setItem('selectedFmz', fmzSelect.value);
-            });
-
-            nextToPhotoBtn.addEventListener('click', () => goToStep('photo'));
-            backToZoneBtn.addEventListener('click', () => goToStep('zone'));
-            startOverBtn.addEventListener('click', () => {
-                // Reset UI
-                imagePreviewContainer.classList.add('hidden');
-                imagePreview.src = '#';
-                identifyBtn.disabled = true;
-                getPicBtn.textContent = 'Get Pic';
-                logCatchBtn.classList.add('hidden');
-                resultContainer.classList.add('hidden');
-                errorContainer.classList.add('hidden');
-                imageFile = null;
-                goToStep('zone');
             });
 
             findZoneBtn.addEventListener('click', () => {
@@ -196,6 +179,40 @@
                     zoneStatus.textContent = 'Unable to retrieve your location.';
                 });
             });
+            
+            viewSummaryBtn.addEventListener('click', async () => {
+                const selectedFmz = fmzSelect.value;
+                summaryTitle.textContent = `Summary for ${selectedFmz}`;
+                summaryContent.innerHTML = '<div class="loader-container"><div class="loader"></div></div>';
+                summaryContainer.classList.remove('hidden');
+                summaryContainer.scrollIntoView({ behavior: 'smooth', block: 'start' });
+
+                try {
+                    const response = await fetch('/api/get-zone-summary', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ fmz: selectedFmz })
+                    });
+                    const summaryData = await response.json();
+                    if (response.ok) {
+                        let summaryHtml = '<ul class="summary-list">';
+                        summaryData.forEach(item => {
+                            const seasonClass = item.isOutOfSeason ? 'out-of-season' : '';
+                            summaryHtml += `<li><strong>${item.species}:</strong> <span class="${seasonClass}">${item.season}</span></li>`;
+                        });
+                        summaryHtml += '</ul>';
+                        summaryContent.innerHTML = summaryHtml;
+                    } else {
+                        summaryContent.innerHTML = `<p class="error-text">${summaryData.error}</p>`;
+                    }
+                } catch (error) {
+                    summaryContent.innerHTML = `<p class="error-text">Failed to load summary.</p>`;
+                }
+            });
+
+            closeSummaryBtn.addEventListener('click', () => {
+                summaryContainer.classList.add('hidden');
+            });
 
             imageUpload.addEventListener('change', async (event) => {
                 const file = event.target.files[0];
@@ -205,7 +222,9 @@
                         imagePreview.src = URL.createObjectURL(imageFile);
                         imagePreviewContainer.classList.remove('hidden');
                         identifyBtn.disabled = false;
-                        getPicBtn.textContent = 'Change Pic';
+                        resultContainer.classList.add('hidden');
+                        errorContainer.classList.add('hidden');
+                        logCatchBtn.disabled = true;
                     } catch (error) {
                         showError("Could not process image file.");
                     }
@@ -218,11 +237,10 @@
                     return;
                 }
                 
-                goToStep('results');
-                skeletonLoader.classList.remove('hidden');
+                loader.classList.remove('hidden');
+                identifyBtn.disabled = true;
                 resultContainer.classList.add('hidden');
                 errorContainer.classList.add('hidden');
-                logCatchBtn.classList.add('hidden');
 
                 try {
                     const formData = new FormData();
@@ -244,7 +262,8 @@
                 } catch (err) {
                     showError(err.message || "An unknown error occurred.");
                 } finally {
-                    skeletonLoader.classList.add('hidden');
+                    loader.classList.add('hidden');
+                    identifyBtn.disabled = false;
                 }
             });
             
@@ -310,13 +329,12 @@
                 
                 regsContainer.innerHTML = regsHtml;
                 resultContainer.classList.remove('hidden');
-                logCatchBtn.classList.remove('hidden');
+                logCatchBtn.disabled = false;
             }
 
             function showError(message) {
                 errorContainer.querySelector('p').textContent = message;
                 errorContainer.classList.remove('hidden');
-                resultContainer.classList.add('hidden');
             }
         });
     </script>
