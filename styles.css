@@ -1,0 +1,174 @@
+/* * styles.css
+ * This file contains the styles for the wtfish web app mockup.
+ * It uses a traditional CSS approach with semantic class names.
+ */
+
+/* -- Root Variables & General Body Styles -- */
+:root {
+    --primary-blue: #007BFF;
+    --accent-orange: #FF8C00;
+    --neutral-off-white: #F7F7F7;
+    --neutral-dark-gray: #333333;
+    --neutral-medium-gray: #6B7281;
+    --neutral-light-gray: #E5E7EB;
+    --text-light: #FFFFFF;
+}
+
+body {
+    font-family: 'Roboto', sans-serif;
+    background-color: var(--neutral-off-white);
+    color: var(--neutral-dark-gray);
+    margin: 0;
+    padding: 0;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+/* -- Main App Layout Container -- */
+.app-container {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    justify-content: space-between;
+}
+
+/* -- Header Section -- */
+.app-header {
+    background-color: var(--primary-blue);
+    color: var(--text-light);
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+    padding: 1rem;
+}
+
+.header-content {
+    display: flex;
+    align-items: center;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.logo {
+    height: 2rem;
+    width: 2rem;
+    margin-right: 0.75rem;
+}
+
+.app-title {
+    font-size: 1.25rem;
+    font-weight: 700;
+    margin: 0;
+}
+
+/* -- Main Content Area -- */
+.main-content {
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 2rem;
+    position: relative; /* For positioning the camera button */
+}
+
+.main-text {
+    /* Pushes the camera button down by creating space */
+    margin-bottom: 5rem; 
+}
+
+.main-heading {
+    font-size: 1.875rem;
+    font-weight: 700;
+    margin: 0 0 0.5rem 0;
+}
+
+.main-subheading {
+    color: rgba(51, 51, 51, 0.7);
+    margin: 0;
+}
+
+/* -- Floating Action Button (Camera) -- */
+.camera-button-container {
+    position: absolute;
+    bottom: 5rem;
+    /* Centering is handled by the parent's align-items: center */
+}
+
+.camera-button {
+    background-color: var(--accent-orange);
+    color: var(--text-light);
+    border: none;
+    border-radius: 50%;
+    height: 4rem;
+    width: 4rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+    cursor: pointer;
+    transition: transform 0.2s ease-in-out;
+}
+
+.camera-button:hover {
+    transform: scale(1.1);
+}
+
+.camera-icon {
+    height: 2rem;
+    width: 2rem;
+}
+
+/* -- Bottom Navigation Bar -- */
+.app-nav {
+    background-color: var(--text-light);
+    border-top: 1px solid var(--neutral-light-gray);
+}
+
+.nav-list {
+    display: flex;
+    justify-content: space-around;
+    padding: 0.5rem 0;
+    margin: 0;
+    list-style: none;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.nav-item {
+    width: 25%; /* Each item takes up a quarter of the space */
+}
+
+.nav-link {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-decoration: none;
+    color: var(--neutral-medium-gray);
+    padding: 0.25rem 0;
+    transition: color 0.2s ease;
+}
+
+/* Style for the active/current navigation item */
+.nav-link.active {
+    color: var(--primary-blue);
+}
+
+.nav-link:hover {
+    color: var(--primary-blue);
+}
+
+.nav-icon {
+    height: 1.5rem;
+    width: 1.5rem;
+    margin-bottom: 0.25rem;
+}
+
+.nav-text {
+    font-size: 0.75rem;
+}
+
+/* Make the text bold for the active item */
+.nav-link.active .nav-text {
+    font-weight: 500;
+}
