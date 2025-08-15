@@ -1,174 +1,352 @@
-/* * styles.css
- * This file contains the styles for the wtfish web app mockup.
- * It uses a traditional CSS approach with semantic class names.
- */
-
 /* -- Root Variables & General Body Styles -- */
 :root {
-    --primary-blue: #007BFF;
-    --accent-orange: #FF8C00;
-    --neutral-off-white: #F7F7F7;
-    --neutral-dark-gray: #333333;
-    --neutral-medium-gray: #6B7281;
-    --neutral-light-gray: #E5E7EB;
-    --text-light: #FFFFFF;
+    --primary-blue: #3b82f6;
+    --primary-green: #22c55e;
+    --neutral-bg: #f3f4f6;
+    --neutral-card-bg: #ffffff;
+    --neutral-border: #d1d5db;
+    --text-dark: #1f2937;
+    --text-medium: #4b5563;
+    --text-light: #6b7281;
+    --text-white: #ffffff;
+    --accent-red: #ef4444;
+    --accent-amber: #f59e0b;
+    --shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+    --border-radius: 0.5rem;
 }
 
 body {
-    font-family: 'Roboto', sans-serif;
-    background-color: var(--neutral-off-white);
-    color: var(--neutral-dark-gray);
+    font-family: 'Inter', sans-serif;
+    background-color: var(--neutral-bg);
+    color: var(--text-dark);
     margin: 0;
     padding: 0;
-    height: 100vh;
-    display: flex;
-    flex-direction: column;
+    font-size: 16px;
+    line-height: 1.5;
 }
 
-/* -- Main App Layout Container -- */
+.hidden {
+    display: none !important;
+}
+
+/* -- Main Layout & Header -- */
 .app-container {
-    display: flex;
-    flex-direction: column;
-    height: 100%;
-    justify-content: space-between;
-}
-
-/* -- Header Section -- */
-.app-header {
-    background-color: var(--primary-blue);
-    color: var(--text-light);
-    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+    max-width: 1024px;
+    margin: 0 auto;
     padding: 1rem;
 }
 
-.header-content {
-    display: flex;
-    align-items: center;
-    max-width: 1200px;
-    margin: 0 auto;
-}
-
-.logo {
-    height: 2rem;
-    width: 2rem;
-    margin-right: 0.75rem;
-}
-
-.app-title {
-    font-size: 1.25rem;
-    font-weight: 700;
-    margin: 0;
-}
-
-/* -- Main Content Area -- */
-.main-content {
-    flex-grow: 1;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
+.app-header {
     text-align: center;
-    padding: 2rem;
-    position: relative; /* For positioning the camera button */
+    margin-bottom: 2rem;
 }
 
-.main-text {
-    /* Pushes the camera button down by creating space */
-    margin-bottom: 5rem; 
-}
-
-.main-heading {
-    font-size: 1.875rem;
-    font-weight: 700;
-    margin: 0 0 0.5rem 0;
-}
-
-.main-subheading {
-    color: rgba(51, 51, 51, 0.7);
-    margin: 0;
-}
-
-/* -- Floating Action Button (Camera) -- */
-.camera-button-container {
-    position: absolute;
-    bottom: 5rem;
-    /* Centering is handled by the parent's align-items: center */
-}
-
-.camera-button {
-    background-color: var(--accent-orange);
-    color: var(--text-light);
-    border: none;
-    border-radius: 50%;
-    height: 4rem;
-    width: 4rem;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
-    cursor: pointer;
-    transition: transform 0.2s ease-in-out;
-}
-
-.camera-button:hover {
-    transform: scale(1.1);
-}
-
-.camera-icon {
-    height: 2rem;
-    width: 2rem;
-}
-
-/* -- Bottom Navigation Bar -- */
-.app-nav {
-    background-color: var(--text-light);
-    border-top: 1px solid var(--neutral-light-gray);
-}
-
-.nav-list {
-    display: flex;
-    justify-content: space-around;
-    padding: 0.5rem 0;
-    margin: 0;
-    list-style: none;
-    max-width: 1200px;
+.app-header .logo {
+    max-width: 320px;
+    width: 100%;
+    height: auto;
+    border-radius: var(--border-radius);
     margin: 0 auto;
 }
 
-.nav-item {
-    width: 25%; /* Each item takes up a quarter of the space */
+.app-header .tagline {
+    color: var(--text-medium);
+    margin-top: 0.5rem;
 }
 
-.nav-link {
+/* -- Main Content Grid -- */
+.main-content {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+}
+
+@media (min-width: 768px) {
+    .main-content {
+        grid-template-columns: 1fr 1fr;
+        align-items: start;
+    }
+    .summary-box {
+        grid-column: span 2;
+    }
+}
+
+/* -- Card Styling -- */
+.card {
+    background-color: var(--neutral-card-bg);
+    padding: 1.5rem;
+    border-radius: var(--border-radius);
+    box-shadow: var(--shadow);
     display: flex;
     flex-direction: column;
-    align-items: center;
-    text-decoration: none;
-    color: var(--neutral-medium-gray);
-    padding: 0.25rem 0;
-    transition: color 0.2s ease;
+    gap: 1.5rem;
 }
 
-/* Style for the active/current navigation item */
-.nav-link.active {
-    color: var(--primary-blue);
+.card-title {
+    font-size: 1.5rem;
+    font-weight: 600;
+    color: var(--text-dark);
+    margin: 0;
 }
 
-.nav-link:hover {
-    color: var(--primary-blue);
+.help-text {
+    color: var(--text-light);
+    font-size: 0.875rem;
+    margin: 0;
 }
 
-.nav-icon {
-    height: 1.5rem;
-    width: 1.5rem;
+/* -- Form Elements -- */
+.form-group {
+    display: flex;
+    flex-direction: column;
+}
+
+.form-label {
+    font-size: 0.875rem;
+    font-weight: 500;
+    color: var(--text-medium);
     margin-bottom: 0.25rem;
 }
 
-.nav-text {
-    font-size: 0.75rem;
+.input-group {
+    display: flex;
+    gap: 0.5rem;
 }
 
-/* Make the text bold for the active item */
-.nav-link.active .nav-text {
+.form-select {
+    flex-grow: 1;
+    width: 100%;
+    padding: 0.625rem 0.75rem;
+    background-color: var(--neutral-card-bg);
+    border: 1px solid var(--neutral-border);
+    border-radius: var(--border-radius);
+    box-shadow: inset 0 1px 2px 0 rgb(0 0 0 / 0.05);
+    min-height: 44px;
+}
+
+.form-status {
+    font-size: 0.75rem;
+    color: var(--text-light);
+    margin-top: 0.25rem;
+    min-height: 1rem;
+}
+
+.file-input {
+    display: none;
+}
+
+/* -- Buttons -- */
+.button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 700;
+    padding: 0.75rem 1rem;
+    border-radius: var(--border-radius);
+    border: none;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    text-align: center;
+    min-height: 44px;
+}
+
+.button:disabled {
+    background-color: #9ca3af;
+    cursor: not-allowed;
+}
+
+.button-primary {
+    background-color: var(--primary-blue);
+    color: var(--text-white);
+}
+.button-primary:hover:not(:disabled) {
+    background-color: #2563eb;
+}
+
+.button-secondary {
+    background-color: #e5e7eb;
+    color: var(--text-medium);
+}
+.button-secondary:hover:not(:disabled) {
+    background-color: #d1d5db;
+}
+
+.button-accent {
+    background-color: var(--primary-green);
+    color: var(--text-white);
+}
+.button-accent:hover:not(:disabled) {
+    background-color: #16a34a;
+}
+
+.link-button {
+    background: none;
+    border: none;
+    color: var(--primary-blue);
+    text-decoration: underline;
+    cursor: pointer;
+    padding: 0;
+    font-size: 0.875rem;
+    text-align: left;
+    margin-top: 0.5rem;
+}
+
+/* -- Image Preview & Results -- */
+.image-preview-container {
+    text-align: center;
+}
+.image-preview {
+    max-width: 100%;
+    max-height: 16rem;
+    margin: 0 auto;
+    border-radius: var(--border-radius);
+    box-shadow: inset 0 2px 4px 0 rgb(0 0 0 / 0.05);
+}
+
+.result-box {
+    background-color: var(--neutral-bg);
+    padding: 1rem;
+    border-radius: var(--border-radius);
+    border: 1px solid var(--neutral-border);
+}
+.result-title {
+    font-weight: 600;
+    color: var(--text-medium);
+}
+.result-species {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: var(--text-dark);
+    margin-bottom: 1rem;
+}
+.regs-list {
+    list-style-position: inside;
+    padding-left: 0;
+    margin-top: 0.5rem;
+    font-size: 0.875rem;
+}
+.regs-list li {
+    margin-bottom: 0.25rem;
+}
+
+/* -- Loader & Messages -- */
+.loader-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.5rem;
+    color: var(--text-light);
+}
+.loader {
+    border: 4px solid #f3f3f3;
+    border-top: 4px solid var(--primary-blue);
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    animation: spin 1s linear infinite;
+}
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+.error-box {
+    background-color: #fee2e2;
+    color: #b91c1c;
+    padding: 1rem;
+    border-radius: var(--border-radius);
+    border: 1px solid #fecaca;
+    text-align: center;
     font-weight: 500;
+}
+
+.warning-text {
+    color: var(--accent-amber);
+    font-weight: 700;
+    margin-top: 0.5rem;
+}
+.out-of-season {
+    color: var(--accent-red);
+    font-weight: 700;
+}
+.details-text {
+    color: var(--text-medium);
+    font-size: 0.875rem;
+    margin-top: 0.5rem;
+}
+
+/* -- Instructions Box -- */
+.instructions-box {
+    background-color: #eff6ff;
+    border: 1px solid #bfdbfe;
+    padding: 1rem;
+    border-radius: var(--border-radius);
+}
+.instructions-list {
+    list-style-type: decimal;
+    list-style-position: inside;
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+    color: var(--text-medium);
+}
+.instruction-image {
+    text-align: center;
+    margin: 0.5rem 0;
+}
+.instruction-image img {
+    height: 3rem;
+    width: 3rem;
+    margin: 0 auto;
+}
+
+/* -- Summary Box -- */
+.summary-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 0.5rem;
+}
+.close-button {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: var(--text-light);
+    background: none;
+    border: none;
+    cursor: pointer;
+}
+.summary-content {
+    max-height: 16rem;
+    overflow-y: auto;
+}
+.summary-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+.summary-list li {
+    padding: 0.5rem 0;
+    border-bottom: 1px solid var(--neutral-border);
+}
+.summary-list li:last-child {
+    border-bottom: none;
+}
+
+/* -- Footer -- */
+.app-footer {
+    text-align: center;
+    margin-top: 3rem;
+    padding: 1rem;
+    font-size: 0.75rem;
+    color: var(--text-light);
+}
+.app-footer a {
+    color: var(--primary-blue);
+    text-decoration: underline;
+}
+
+/* -- Accessibility -- */
+:focus-visible {
+    outline: 3px solid var(--primary-blue);
+    outline-offset: 2px;
 }
