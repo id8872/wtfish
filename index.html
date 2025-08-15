@@ -154,7 +154,19 @@
                 option.textContent = `Zone ${i}`;
                 fmzSelect.appendChild(option);
             }
-            fmzSelect.value = 'FMZ 16';
+            
+            // Load the saved zone from localStorage, or use a default
+            const savedFmz = localStorage.getItem('selectedFmz');
+            if (savedFmz) {
+                fmzSelect.value = savedFmz;
+            } else {
+                fmzSelect.value = 'FMZ 16'; // Default if nothing is saved
+            }
+
+            // Save the selected zone to localStorage whenever it changes
+            fmzSelect.addEventListener('change', () => {
+                localStorage.setItem('selectedFmz', fmzSelect.value);
+            });
 
             findZoneBtn.addEventListener('click', () => {
                 if (!navigator.geolocation) {
@@ -174,6 +186,8 @@
                         const data = await response.json();
                         if (data.zone) {
                             fmzSelect.value = data.zone;
+                            // Also save the found zone
+                            localStorage.setItem('selectedFmz', data.zone); 
                             zoneStatus.textContent = `Zone found: ${data.zone}`;
                         } else {
                             zoneStatus.textContent = 'Zone not found. Note: App is for Ontario regulations only.';
