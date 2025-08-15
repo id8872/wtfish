@@ -280,9 +280,35 @@
             function displayResults(result) {
                 fishResult.textContent = result.species;
                 let regsHtml = '';
-                // ... (rest of the regulation HTML generation logic is the same)
-                regsContainer.innerHTML = regsHtml; // Populate it
                 
+                if (result.isNotListedInZone) {
+                    regsHtml = `<p class="warning-text"><strong>Warning:</strong> This species is not listed in the regulations for ${fmzSelect.value}.</p>`;
+                    if (result.additionalDetails) {
+                        const details = result.additionalDetails.replace(result.species, `<strong>${result.species}</strong>`);
+                        regsHtml += `<p class="details-text">${details}</p>`;
+                    }
+                } else if (result.regulations) {
+                    regsHtml += '<h4>Regulations:</h4>';
+                    const seasonClass = result.isOutOfSeason ? 'out-of-season' : '';
+                    const limitClass = result.hasSizeLimit && !result.isOutOfSeason ? 'warning-text' : '';
+                    const cLimitClass = result.isCatchAndRelease && !result.isOutOfSeason && !result.hasSizeLimit ? 'warning-text' : limitClass;
+
+                    regsHtml += `<ul class="regs-list">`;
+                    regsHtml += `<li class="${seasonClass}"><strong>Season:</strong> ${result.regulations.season}</li>`;
+                    regsHtml += `<li class="${limitClass}"><strong>Sport Limit:</strong> ${result.regulations.limits.Sport}</li>`;
+                    regsHtml += `<li class="${cLimitClass}"><strong>Conservation Limit:</strong> ${result.regulations.limits.Conservation}</li>`;
+                    regsHtml += `</ul>`;
+
+                    if (result.isOutOfSeason) {
+                        regsHtml += `<p class="warning-text out-of-season"><strong>Warning:</strong> The current date appears to be outside the open season for this species.</p>`;
+                    } else if (result.hasSizeLimit) {
+                        regsHtml += `<p class="warning-text"><strong>Note:</strong> Size restrictions apply. Please measure your catch.</p>`;
+                    } else if (result.isCatchAndRelease) {
+                        regsHtml += `<p class="warning-text"><strong>Note:</strong> This is catch-and-release only for Conservation Licence holders.</p>`;
+                    }
+                }
+                
+                regsContainer.innerHTML = regsHtml;
                 resultContainer.classList.remove('hidden');
                 logCatchBtn.classList.remove('hidden');
             }
@@ -296,4 +322,3 @@
     </script>
 </body>
 </html>
-
