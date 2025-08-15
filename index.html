@@ -4,15 +4,11 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>WTFish!</title>
-    <!-- Link to the new stylesheet -->
     <link href="styles.css" rel="stylesheet">
-    <!-- Favicon -->
     <link rel="icon" type="image/png" href="assets/favicon.png">
-    <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-    <!-- Client-side maintenance mode script -->
     <script>
         // Vercel injects environment variables here.
         // We check if the maintenance mode variable is set to 'true'.
@@ -31,7 +27,6 @@
         </header>
 
         <main class="main-content">
-            <!-- Left Column: Image & Identification -->
             <div class="card">
                 <h2 class="card-title">1. Capture Your Fish</h2>
                 
@@ -80,7 +75,6 @@
                 </div>
             </div>
 
-            <!-- Right Column: Details & Logging -->
             <div class="card">
                 <h2 class="card-title">2. Log Your Catch</h2>
                 <p class="help-text">On the Fish ON-Line site, follow these steps:</p>
@@ -104,7 +98,6 @@
                 </button>
             </div>
 
-            <!-- Zone Summary Box -->
             <div id="summaryContainer" class="card summary-box hidden">
                 <div class="summary-header">
                     <h3 id="summaryTitle" class="card-title">Zone Summary</h3>
@@ -121,10 +114,31 @@
         </footer>
     </div>
 
-    <script>
-        // All your JavaScript logic remains here
+    <div id="fishModal" class="modal-overlay">
+      <div class="modal-content">
+        <span class="modal-close-button">&times;</span>
+        <h2 id="modalFishName" class="card-title"></h2>
+        <p id="modalScientificName" class="help-text" style="margin-top:-1rem; margin-bottom:1rem;"></p>
+        
+        <h3>Description</h3>
+        <p id="modalDescription"></p>
+        
+        <h3>Habitat</h3>
+        <p id="modalHabitat"></p>
+        
+        <h3>Feeding Habits</h3>
+        <p id="modalFeeding"></p>
+        
+        <h3>Angling Tips</h3>
+        <div id="modalAnglingTips"></div>
+      </div>
+    </div>
+
+    <script type="module">
+        import { fishDetails } from './api/fishDetails.js';
+
         document.addEventListener('DOMContentLoaded', () => {
-            // DOM Elements
+            // DOM Elements (from original script)
             const fmzSelect = document.getElementById('fmzSelect');
             const findZoneBtn = document.getElementById('findZoneBtn');
             const zoneStatus = document.getElementById('zoneStatus');
@@ -145,9 +159,51 @@
             const errorContainer = document.getElementById('error');
             const logCatchBtn = document.getElementById('logCatchBtn');
             
+            // --- NEW: Modal DOM Elements ---
+            const modal = document.getElementById('fishModal');
+            const closeModalButton = document.querySelector('.modal-close-button');
+            const modalFishName = document.getElementById('modalFishName');
+            const modalScientificName = document.getElementById('modalScientificName');
+            const modalDescription = document.getElementById('modalDescription');
+            const modalHabitat = document.getElementById('modalHabitat');
+            const modalFeeding = document.getElementById('modalFeeding');
+            const modalAnglingTips = document.getElementById('modalAnglingTips');
+
             const targetUrl = "https://www.lioapplications.lrc.gov.on.ca/fishonline/Index.html?viewer=FishONLine.FishONLine&locale=en-CA";
             let imageFile = null;
 
+            // --- NEW: Modal Functions ---
+            function showFishDetails(fishName) {
+                const details = fishDetails[fishName];
+                if (!details) return;
+
+                modalFishName.textContent = details.name;
+                modalScientificName.textContent = details.scientificName;
+                modalDescription.textContent = details.description;
+                modalHabitat.textContent = details.habitat;
+                modalFeeding.innerHTML = `<strong>Diet:</strong> ${details.feeding.diet} <br> <strong>Times:</strong> ${details.feeding.times}`;
+                modalAnglingTips.innerHTML = `
+                    <p><strong>Lures:</strong> ${details.anglingTips.lures}</p>
+                    <p><strong>Bait:</strong> ${details.anglingTips.bait}</p>
+                    <p><strong>Technique:</strong> ${details.anglingTips.technique}</p>
+                `;
+                modal.classList.add('show-modal');
+            }
+
+            function hideModal() {
+                modal.classList.remove('show-modal');
+            }
+
+            // --- NEW: Modal Event Listeners ---
+            closeModalButton.addEventListener('click', hideModal);
+            modal.addEventListener('click', (event) => {
+                if (event.target === modal) {
+                    hideModal();
+                }
+            });
+
+            // (The rest of your existing JavaScript logic remains here...)
+            // ... (populate FMZ dropdown, handle location, etc.) ...
             for (let i = 1; i <= 20; i++) {
                 const option = document.createElement('option');
                 option.value = `FMZ ${i}`;
@@ -155,15 +211,13 @@
                 fmzSelect.appendChild(option);
             }
             
-            // Load the saved zone from localStorage, or use a default
             const savedFmz = localStorage.getItem('selectedFmz');
             if (savedFmz) {
                 fmzSelect.value = savedFmz;
             } else {
-                fmzSelect.value = 'FMZ 16'; // Default if nothing is saved
+                fmzSelect.value = 'FMZ 16';
             }
 
-            // Save the selected zone to localStorage whenever it changes
             fmzSelect.addEventListener('change', () => {
                 localStorage.setItem('selectedFmz', fmzSelect.value);
             });
@@ -186,7 +240,6 @@
                         const data = await response.json();
                         if (data.zone) {
                             fmzSelect.value = data.zone;
-                            // Also save the found zone
                             localStorage.setItem('selectedFmz', data.zone); 
                             zoneStatus.textContent = `Zone found: ${data.zone}`;
                         } else {
@@ -203,7 +256,7 @@
             viewSummaryBtn.addEventListener('click', async () => {
                 const selectedFmz = fmzSelect.value;
                 summaryTitle.textContent = `Summary for ${selectedFmz}`;
-                summaryContent.innerHTML = '<div class="loader mx-auto"></div>';
+                summaryContent.innerHTML = '<div class="loader-container"><div class="loader"></div></div>';
                 summaryContainer.classList.remove('hidden');
                 
                 summaryContainer.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
@@ -225,10 +278,10 @@
                         summaryHtml += '</ul>';
                         summaryContent.innerHTML = summaryHtml;
                     } else {
-                        summaryContent.innerHTML = `<p class="error-text">${summaryData.error}</p>`;
+                        summaryContent.innerHTML = `<p class="error-box">${summaryData.error}</p>`;
                     }
                 } catch (error) {
-                    summaryContent.innerHTML = `<p class="error-text">Failed to load summary.</p>`;
+                    summaryContent.innerHTML = `<p class="error-box">Failed to load summary.</p>`;
                 }
             });
 
@@ -336,8 +389,15 @@
                         fishResult.textContent = result.species;
                         
                         let regsHtml = '';
+                        // --- MODIFIED SECTION ---
+                        // Check if detailed info exists for the identified species
+                        if (fishDetails[result.species]) {
+                            regsHtml += `<button id="viewDetailsBtn" class="link-button">View Species Details & Tips</button>`;
+                        }
+                        // (The rest of the logic for displaying regulations remains)
+
                         if (result.isNotListedInZone) {
-                            regsHtml = `<p class="warning-text"><strong>Warning:</strong> This species is not listed in the regulations for ${selectedFmz}.</p>`;
+                            regsHtml += `<p class="warning-text"><strong>Warning:</strong> This species is not listed in the regulations for ${selectedFmz}.</p>`;
                             if (result.additionalDetails) {
                                 const details = result.additionalDetails.replace(result.species, `<strong>${result.species}</strong>`);
                                 regsHtml += `<p class="details-text">${details}</p>`;
@@ -363,6 +423,15 @@
                             }
                         }
                         regsContainer.innerHTML = regsHtml;
+
+                        // --- NEW: Add event listener for the details button if it exists ---
+                        const viewDetailsBtn = document.getElementById('viewDetailsBtn');
+                        if (viewDetailsBtn) {
+                            viewDetailsBtn.addEventListener('click', () => {
+                                showFishDetails(result.species);
+                            });
+                        }
+                        // --- END MODIFIED SECTION ---
 
                         resultContainer.classList.remove('hidden');
                         logCatchBtn.disabled = false;
