@@ -9,6 +9,8 @@
     --text-medium: #4b5563;
     --text-light: #6b7281;
     --text-white: #ffffff;
+    --accent-red: #ef4444;
+    --accent-amber: #f59e0b;
     --shadow: 0 10px 15px -3px rgb(0 0 0 / 0.07), 0 4px 6px -4px rgb(0 0 0 / 0.1);
     --border-radius: 0.75rem;
 }
@@ -213,17 +215,49 @@ body {
 }
 
 .result-box {
-    /* Styles for the actual result content */
+    text-align: left;
 }
 .result-title {
     font-weight: 600;
     color: var(--text-medium);
+    margin-bottom: 0.25rem;
 }
 .result-species {
-    font-size: 1.5rem;
+    font-size: 1.75rem;
     font-weight: 700;
     color: var(--text-dark);
+    margin-bottom: 1rem;
 }
+.result-box h4 {
+    font-weight: 600;
+    color: var(--text-medium);
+    margin-top: 1rem;
+    margin-bottom: 0.5rem;
+}
+.regs-list {
+    list-style: none;
+    padding-left: 0;
+    margin: 0;
+    font-size: 0.875rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+.details-text {
+    font-size: 0.875rem;
+    color: var(--text-medium);
+    margin-top: 0.5rem;
+}
+.warning-text {
+    font-weight: 600;
+    color: var(--accent-amber);
+    font-size: 0.875rem;
+    margin-top: 0.5rem;
+}
+.out-of-season {
+    color: var(--accent-red);
+}
+
 
 /* -- Skeleton Loader -- */
 .skeleton-loader {
